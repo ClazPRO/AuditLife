@@ -35,7 +35,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
   const activeCategories = categories.length > 0 ? categories : defaultCategories;
 
   const form = useForm<WeeklyAuditFormValues>({
-    resolver: zodResolver(weeklyAuditSchema),
+    resolver: zodResolver(weeklyAuditSchema) as any,
     defaultValues: {
       week_start_date: "",
       week_end_date: "",
