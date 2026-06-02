@@ -4,7 +4,7 @@ export const activitySchema = z.object({
   category_id: z.string().min(1, { message: "Kategori wajib dipilih" }),
   duration: z.coerce.number().min(1, { message: "Durasi minimal 1 menit" }).max(10080, { message: "Durasi tidak valid (maks 1 minggu)" }),
   productivity_type: z.enum(["produktif", "non-produktif"], {
-    required_error: "Pilih jenis produktivitas",
+    errorMap: () => ({ message: "Pilih jenis produktivitas" }),
   }),
   description: z.string().min(3, { message: "Deskripsi minimal 3 karakter" }).max(500, { message: "Deskripsi maksimal 500 karakter" }),
 });
