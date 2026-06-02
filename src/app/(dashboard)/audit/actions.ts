@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { WeeklyAuditFormValues } from "@/lib/validations/audit";
 
 export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {

@@ -8,7 +8,6 @@ import {
   ClipboardList,
   LineChart,
   Wallet,
-  Settings,
   LogOut,
   User,
 } from "lucide-react";
