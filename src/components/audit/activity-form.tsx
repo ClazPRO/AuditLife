@@ -35,6 +35,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
   const activeCategories = categories.length > 0 ? categories : defaultCategories;
 
   const form = useForm<WeeklyAuditFormValues>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(weeklyAuditSchema) as any,
     defaultValues: {
       week_start_date: "",
