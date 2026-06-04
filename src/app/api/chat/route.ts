@@ -32,7 +32,7 @@ Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia ya
       temperature: 0.7,
     });
 
-    return result.toDataStreamResponse();
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error("AI Chat error:", error);
     return new Response(
