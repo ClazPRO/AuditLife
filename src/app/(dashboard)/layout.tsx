@@ -3,11 +3,10 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { logout } from "../(auth)/actions";
+import { ChatWidget } from "@/components/chat/chat-widget";
+import { SidebarNav } from "@/components/layout/sidebar-nav";
+import { CursorLoader } from "@/components/layout/cursor-loader";
 import {
-  LayoutDashboard,
-  ClipboardList,
-  LineChart,
-  Wallet,
   LogOut,
   User,
 } from "lucide-react";
@@ -32,7 +31,7 @@ export default async function DashboardLayout({
   const userName = user.user_metadata?.name || user.email?.split("@")[0];
 
   return (
-    <div className="flex min-h-screen bg-muted/40">
+    <div className="flex min-h-screen bg-muted/40 relative">
       {/* Sidebar */}
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-background sm:flex">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -41,36 +40,7 @@ export default async function DashboardLayout({
           </Link>
         </div>
         <div className="flex-1 overflow-auto py-4">
-          <nav className="grid items-start px-2 text-sm font-medium lg:px-4 space-y-1">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-primary bg-muted transition-all hover:text-primary"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
-            </Link>
-            <Link
-              href="/audit"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-            >
-              <ClipboardList className="h-4 w-4" />
-              Weekly Audit
-            </Link>
-            <Link
-              href="/insight"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-            >
-              <LineChart className="h-4 w-4" />
-              AI Insight
-            </Link>
-            <Link
-              href="/financial"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-            >
-              <Wallet className="h-4 w-4" />
-              Financial Audit
-            </Link>
-          </nav>
+          <SidebarNav />
         </div>
         <div className="mt-auto border-t p-4">
           <div className="flex items-center gap-3 mb-4 px-2">
@@ -103,6 +73,10 @@ export default async function DashboardLayout({
           {children}
         </main>
       </div>
+      
+      {/* Utility Components */}
+      <CursorLoader />
+      <ChatWidget />
     </div>
   );
 }

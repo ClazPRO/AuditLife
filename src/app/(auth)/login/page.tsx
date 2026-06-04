@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { login, loginAsGuest } from "../actions"
 import { useState } from "react"
+import { Loader2 } from "lucide-react"
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -67,6 +68,7 @@ export default function LoginPage() {
               <p className="text-sm font-medium text-destructive">{error}</p>
             )}
             <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isLoading ? "Memproses..." : "Masuk"}
             </Button>
           </form>

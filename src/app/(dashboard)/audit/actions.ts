@@ -66,3 +66,37 @@ export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
     return { error: "Terjadi kesalahan sistem" };
   }
 }
+
+export async function getWeeklyAudits() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Unauthorized", records: [] };
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("weekly_audit")
+      .select(`
+        audit_id,
+        week_start_date,
+        week_end_date,
+        total_time,
+        summary,
+        created_at
+      `)
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Fetch Audits Error:", error);
+      return { error: "Gagal mengambil riwayat audit", records: [] };
+    }
+
+    return { records: data || [] };
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    return { error: "Terjadi kesalahan sistem", records: [] };
+  }
+}

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 // Tipe untuk kategori dari DB
@@ -185,8 +185,9 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
         </div>
       )}
 
-      <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto">
-        {isSubmitting ? "Menyimpan..." : "Submit Weekly Audit"}
+      <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting}>
+        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {isSubmitting ? "Menyimpan..." : "Simpan Audit Mingguan"}
       </Button>
     </form>
   );
