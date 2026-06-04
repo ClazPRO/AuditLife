@@ -10,9 +10,7 @@ import { Card } from "@/components/ui/card";
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const { messages, sendMessage, status, error } = useChat({
-    api: "/api/chat",
-  });
+  const { messages, sendMessage, status, error } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isLoading = status === "submitted" || status === "streaming";
