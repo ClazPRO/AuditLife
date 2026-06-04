@@ -60,7 +60,7 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
         });
         setIsOpen(false);
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Terjadi kesalahan yang tidak terduga.",

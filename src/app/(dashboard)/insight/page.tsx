@@ -32,7 +32,7 @@ export default function InsightPage() {
           <CardContent>
             <div className="bg-primary/5 p-4 rounded-lg text-sm space-y-3 border border-primary/10">
               <p>
-                <strong>Observasi:</strong> AI mendeteksi Anda menghabiskan banyak waktu di fase "Non-Produktif" selama 2 minggu berturut-turut.
+                <strong>Observasi:</strong> AI mendeteksi Anda menghabiskan banyak waktu di fase &quot;Non-Produktif&quot; selama 2 minggu berturut-turut.
               </p>
               <p>
                 <strong>Saran:</strong> Cobalah metode Pomodoro (25 menit kerja, 5 menit istirahat) untuk mencegah *burnout* dan meningkatkan fokus harian.
@@ -52,7 +52,7 @@ export default function InsightPage() {
           <CardContent>
             <div className="bg-emerald-500/5 p-4 rounded-lg text-sm space-y-3 border border-emerald-500/10">
               <p>
-                <strong>Observasi:</strong> Alokasi pengeluaran "Wants" (Keinginan) Anda memakan porsi 40% dari total pemasukan.
+                <strong>Observasi:</strong> Alokasi pengeluaran &quot;Wants&quot; (Keinginan) Anda memakan porsi 40% dari total pemasukan.
               </p>
               <p>
                 <strong>Saran:</strong> Terapkan aturan 50/30/20. Usahakan untuk membatasi pengeluaran non-esensial maksimal di angka 30%, lalu alihkan 10% sisanya ke instrumen investasi.

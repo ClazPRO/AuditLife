@@ -46,7 +46,7 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
           description: "Data berhasil dihapus.",
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Terjadi kesalahan sistem.",
