@@ -1,5 +1,5 @@
 import { google } from "@ai-sdk/google";
-import { streamText } from "ai";
+import { streamText, convertToModelMessages } from "ai";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -23,12 +23,13 @@ AuditLife adalah platform pelacakan produktivitas dan keuangan mingguan.
 Tugas Anda adalah membantu pengguna dengan pertanyaan seputar produktivitas, manajemen keuangan, kehidupan sehari-hari, atau memberikan panduan tentang cara menggunakan aplikasi ini.
 Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia yang santai tapi sopan.`;
 
+    // Convert UI messages to model messages for AI SDK v6
+    const modelMessages = await convertToModelMessages(messages);
+
     const result = await streamText({
       model: google("models/gemini-1.5-flash"),
-      messages: [
-        { role: "system", content: systemPrompt },
-        ...messages
-      ],
+      system: systemPrompt,
+      messages: modelMessages,
       temperature: 0.7,
     });
 

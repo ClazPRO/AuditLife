@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FormEvent } from "react";
 import { useChat } from "@ai-sdk/react";
 import { MessageCircle, X, Send, User, Bot, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,10 +9,13 @@ import { Card } from "@/components/ui/card";
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
+  const [inputValue, setInputValue] = useState("");
+  const { messages, sendMessage, status, error } = useChat({
     api: "/api/chat",
   });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const isLoading = status === "submitted" || status === "streaming";
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -20,6 +23,24 @@ export function ChatWidget() {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isOpen]);
+
+  const handleFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isLoading) return;
+    sendMessage({ text: inputValue });
+    setInputValue("");
+  };
+
+  // Helper to extract text content from message parts
+  const getMessageText = (m: (typeof messages)[number]): string => {
+    if (m.parts && m.parts.length > 0) {
+      return m.parts
+        .filter((p): p is { type: "text"; text: string } => p.type === "text")
+        .map((p) => p.text)
+        .join("");
+    }
+    return "";
+  };
 
   return (
     <>
@@ -82,7 +103,7 @@ export function ChatWidget() {
                       : "bg-muted"
                   }`}
                 >
-                  {m.content}
+                  {getMessageText(m)}
                 </div>
               </div>
             ))}
@@ -110,17 +131,17 @@ export function ChatWidget() {
           {/* Input Area */}
           <div className="p-4 border-t bg-background rounded-b-lg">
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleFormSubmit}
               className="flex items-center gap-2"
             >
               <Input
-                value={input}
-                onChange={handleInputChange}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Tanya apa saja..."
                 className="flex-1"
                 disabled={isLoading}
               />
-              <Button type="submit" size="icon" disabled={isLoading || !(input || "").trim()}>
+              <Button type="submit" size="icon" disabled={isLoading || !inputValue.trim()}>
                 <Send className="h-4 w-4" />
               </Button>
             </form>
