@@ -25,11 +25,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-neutral-950 flex items-center justify-center p-0 sm:p-6 md:p-8 relative overflow-hidden`}
       >
-        {children}
+        {/* Subtle Background */}
+        <div className="fixed inset-0 bg-neutral-950 -z-10" />
+        <div className="fixed inset-0 grid-pattern -z-10 opacity-30" />
+        
+        {/* Phone Mockup Frame Container */}
+        <div className="w-full h-screen sm:w-[410px] sm:h-[728px] sm:rounded-[36px] sm:border-[8px] sm:border-neutral-800 bg-background sm:shadow-[0_0_60px_rgba(0,0,0,0.8)] relative flex flex-col overflow-hidden">
+          {/* Status Bar / Notch spacer for desktop */}
+          <div className="hidden sm:flex justify-center items-center h-6 bg-background/80 backdrop-blur-md w-full sticky top-0 z-30 shrink-0">
+            <div className="h-4 w-28 bg-neutral-900 rounded-full border border-white/5 flex items-center justify-center">
+              <div className="h-1.5 w-1.5 rounded-full bg-primary/40 mr-2 animate-pulse" />
+              <span className="text-[9px] text-muted-foreground/80 font-mono tracking-widest">AUDITLIFE</span>
+            </div>
+          </div>
+
+          {/* Children container (no scroll here, handled by page components) */}
+          <div className="flex-1 relative flex flex-col overflow-hidden h-full">
+            {children}
+          </div>
+        </div>
+
         <Toaster />
       </body>
     </html>
