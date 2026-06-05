@@ -4,12 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { logout } from "../(auth)/actions";
 import { ChatWidget } from "@/components/chat/chat-widget";
-import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { CursorLoader } from "@/components/layout/cursor-loader";
 import {
   LogOut,
-  User,
   Sparkles,
 } from "lucide-react";
 
