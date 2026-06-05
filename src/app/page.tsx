@@ -4,7 +4,7 @@ import { ArrowRight, Activity, PieChart, Shield, Sparkles, Wallet } from "lucide
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 relative">
+    <div className="flex flex-col flex-1 h-full overflow-y-auto no-scrollbar relative">
       {/* Animated Background */}
       <div className="absolute inset-0 gradient-bg -z-10" />
       <div className="absolute inset-0 grid-pattern -z-10" />
