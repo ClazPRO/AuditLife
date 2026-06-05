@@ -46,7 +46,7 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
           description: "Data berhasil dihapus.",
         });
       }
-    } catch (_error) {
+    } catch {
       toast({
         title: "Error",
         description: "Terjadi kesalahan sistem.",
@@ -107,7 +107,7 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
 
               {record.description && (
                 <p className="text-xs text-muted-foreground mb-3 line-clamp-2 italic">
-                  "{record.description}"
+                  &ldquo;{record.description}&rdquo;
                 </p>
               )}
 
