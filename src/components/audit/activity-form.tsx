@@ -242,6 +242,3 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
     </>
   );
 }
-
-  );
-}
