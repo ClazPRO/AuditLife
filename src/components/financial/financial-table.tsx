@@ -81,7 +81,7 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
   return (
     <div className="space-y-4">
       {/* Mobile view (cards) */}
-      <div className="grid gap-3 sm:hidden">
+      <div className="grid gap-3 xl:hidden">
         {records.map((record) => {
           const dateObj = new Date(record.date);
           const dateStr = new Intl.DateTimeFormat("id-ID", {
@@ -133,7 +133,7 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
       </div>
 
       {/* Desktop view (table) */}
-      <div className="hidden sm:block rounded-md border">
+      <div className="hidden xl:block rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
