@@ -133,5 +133,4 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
       </div>
     </div>
   );
-  );
 }
