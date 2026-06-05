@@ -32,7 +32,7 @@ export default async function DashboardPage() {
   // 4. Financial: Total Saldo
   let balance = 0;
   if (hasFinances) {
-    finances.forEach((record: any) => {
+    finances.forEach((record: { type: string; amount: number | string }) => {
       if (record.type === "income") {
         balance += Number(record.amount);
       } else {
@@ -200,7 +200,7 @@ export default async function DashboardPage() {
                   <Sparkles className="h-6 w-6 text-primary" />
                 </div>
                 <p className="text-sm text-foreground px-2 font-medium">
-                  "{productivityScore > 50 ? 'Produktivitasmu minggu ini cukup baik! Pertahankan momentum ini.' : 'Sepertinya minggu ini kamu butuh fokus lebih untuk meningkatkan produktivitas.'}"
+                  &ldquo;{productivityScore > 50 ? 'Produktivitasmu minggu ini cukup baik! Pertahankan momentum ini.' : 'Sepertinya minggu ini kamu butuh fokus lebih untuk meningkatkan produktivitas.'}&rdquo;
                 </p>
                 <Button variant="outline" asChild className="w-full mt-2">
                   <Link href="/insight">Tanya AI Lebih Lanjut</Link>
