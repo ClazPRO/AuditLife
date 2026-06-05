@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { logout } from "../(auth)/actions";
-import { ChatWidget } from "@/components/chat/chat-widget";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { CursorLoader } from "@/components/layout/cursor-loader";
 import { LogOut, Sparkles } from "lucide-react";
@@ -58,7 +57,6 @@ export default async function DashboardLayout({
 
       {/* Utility Components */}
       <CursorLoader />
-      <ChatWidget />
     </div>
   );
 }

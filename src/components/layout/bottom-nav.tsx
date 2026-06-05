@@ -13,32 +13,39 @@ import { cn } from "@/lib/utils";
 
 const items = [
   {
-    title: "Dashboard",
+    title: "Beranda",
     href: "/dashboard",
     icon: LayoutDashboard,
     color: "text-violet-400",
     bgActive: "bg-violet-500/10",
   },
   {
-    title: "Audit",
+    title: "Audit Hidup",
     href: "/audit",
     icon: ClipboardList,
     color: "text-blue-400",
     bgActive: "bg-blue-500/10",
   },
   {
-    title: "Insight",
-    href: "/insight",
-    icon: LineChart,
-    color: "text-emerald-400",
-    bgActive: "bg-emerald-500/10",
-  },
-  {
-    title: "Financial",
+    title: "Keuangan",
     href: "/financial",
     icon: Wallet,
     color: "text-amber-400",
     bgActive: "bg-amber-500/10",
+  },
+  {
+    title: "AI Assistant",
+    href: "/assistant",
+    icon: Sparkles,
+    color: "text-violet-400",
+    bgActive: "bg-violet-500/10",
+  },
+  {
+    title: "Laporan",
+    href: "/insight",
+    icon: LineChart,
+    color: "text-emerald-400",
+    bgActive: "bg-emerald-500/10",
   },
 ];
 
