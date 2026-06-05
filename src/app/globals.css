@@ -216,3 +216,59 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Neon border & card shadow glows */
+.neon-card-violet {
+  border: 1.5px solid rgba(167, 139, 250, 0.35) !important;
+  box-shadow: 0 0 15px -3px rgba(167, 139, 250, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(15, 10, 30, 0.7) !important;
+  transition: all 0.3s ease-in-out;
+}
+.neon-card-violet:hover {
+  border-color: rgba(167, 139, 250, 0.7) !important;
+  box-shadow: 0 0 25px -3px rgba(167, 139, 250, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.neon-card-blue {
+  border: 1.5px solid rgba(96, 165, 250, 0.35) !important;
+  box-shadow: 0 0 15px -3px rgba(96, 165, 250, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(10, 15, 35, 0.7) !important;
+  transition: all 0.3s ease-in-out;
+}
+.neon-card-blue:hover {
+  border-color: rgba(96, 165, 250, 0.7) !important;
+  box-shadow: 0 0 25px -3px rgba(96, 165, 250, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.neon-card-emerald {
+  border: 1.5px solid rgba(52, 211, 153, 0.35) !important;
+  box-shadow: 0 0 15px -3px rgba(52, 211, 153, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(10, 30, 20, 0.7) !important;
+  transition: all 0.3s ease-in-out;
+}
+.neon-card-emerald:hover {
+  border-color: rgba(52, 211, 153, 0.7) !important;
+  box-shadow: 0 0 25px -3px rgba(52, 211, 153, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.neon-card-amber {
+  border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
+  box-shadow: 0 0 15px -3px rgba(251, 191, 36, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(30, 20, 10, 0.7) !important;
+  transition: all 0.3s ease-in-out;
+}
+.neon-card-amber:hover {
+  border-color: rgba(251, 191, 36, 0.7) !important;
+  box-shadow: 0 0 25px -3px rgba(251, 191, 36, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Custom Neon Badge */
+.neon-badge {
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+  animation: pulse-glow 2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 5px rgba(167, 139, 250, 0.2); }
+  100% { box-shadow: 0 0 15px rgba(167, 139, 250, 0.5); }
+}
