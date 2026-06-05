@@ -26,7 +26,7 @@ export default async function DashboardLayout({
   const userName = user.user_metadata?.name || user.email?.split("@")[0];
 
   return (
-    <div className="flex-1 flex flex-col relative h-full overflow-hidden">
+    <div className="flex-1 flex flex-col relative min-h-0 overflow-hidden">
       {/* Header */}
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 shrink-0">
         <div className="w-full flex justify-between items-center">
