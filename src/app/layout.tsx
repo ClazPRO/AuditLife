@@ -44,7 +44,7 @@ export default function RootLayout({
           </div>
 
           {/* Children container (no scroll here, handled by page components) */}
-          <div className="flex-1 relative flex flex-col overflow-hidden h-full">
+          <div className="flex-1 relative flex flex-col overflow-hidden min-h-0">
             {children}
           </div>
         </div>
