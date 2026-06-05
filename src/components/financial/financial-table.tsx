@@ -79,58 +79,113 @@ export function FinancialTable({ records }: { records: RecordType[] }) {
   }
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tanggal</TableHead>
-            <TableHead>Kategori</TableHead>
-            <TableHead>Tipe</TableHead>
-            <TableHead>Deskripsi</TableHead>
-            <TableHead className="text-right">Jumlah</TableHead>
-            <TableHead className="w-[80px]"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {records.map((record) => {
-            const dateObj = new Date(record.date);
-            const dateStr = new Intl.DateTimeFormat("id-ID", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            }).format(dateObj);
+    <div className="space-y-4">
+      {/* Mobile view (cards) */}
+      <div className="grid gap-3 sm:hidden">
+        {records.map((record) => {
+          const dateObj = new Date(record.date);
+          const dateStr = new Intl.DateTimeFormat("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }).format(dateObj);
 
-            return (
-              <TableRow key={record.record_id}>
-                <TableCell>{dateStr}</TableCell>
-                <TableCell className="font-medium">{record.category}</TableCell>
-                <TableCell>
-                  <Badge variant="outline" className={getTypeColor(record.type)}>
-                    {record.type.charAt(0).toUpperCase() + record.type.slice(1)}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-muted-foreground max-w-[200px] truncate">
-                  {record.description || "-"}
-                </TableCell>
-                <TableCell className="text-right font-semibold">
+          return (
+            <div 
+              key={record.record_id} 
+              className="flex flex-col p-4 rounded-xl border border-white/5 bg-card/30 backdrop-blur-md relative hover:bg-card/45 transition-colors"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[10px] text-muted-foreground">{dateStr}</span>
+                  <span className="font-semibold text-foreground text-sm">{record.category}</span>
+                </div>
+                <Badge variant="outline" className={getTypeColor(record.type)}>
+                  {record.type.charAt(0).toUpperCase() + record.type.slice(1)}
+                </Badge>
+              </div>
+
+              {record.description && (
+                <p className="text-xs text-muted-foreground mb-3 line-clamp-2 italic">
+                  "{record.description}"
+                </p>
+              )}
+
+              <div className="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
+                <span className="text-sm font-semibold text-foreground">
                   Rp {Number(record.amount).toLocaleString("id-ID")}
-                </TableCell>
-                <TableCell>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-100 dark:hover:bg-red-900/20"
-                    onClick={() => handleDelete(record.record_id)}
-                    disabled={isDeleting === record.record_id}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+                </span>
+                
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-8 text-red-500 hover:text-red-400 hover:bg-red-500/10 gap-1.5 px-3 rounded-lg text-xs"
+                  onClick={() => handleDelete(record.record_id)}
+                  disabled={isDeleting === record.record_id}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Hapus
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Desktop view (table) */}
+      <div className="hidden sm:block rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Tanggal</TableHead>
+              <TableHead>Kategori</TableHead>
+              <TableHead>Tipe</TableHead>
+              <TableHead>Deskripsi</TableHead>
+              <TableHead className="text-right">Jumlah</TableHead>
+              <TableHead className="w-[80px]"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {records.map((record) => {
+              const dateObj = new Date(record.date);
+              const dateStr = new Intl.DateTimeFormat("id-ID", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }).format(dateObj);
+
+              return (
+                <TableRow key={record.record_id}>
+                  <TableCell>{dateStr}</TableCell>
+                  <TableCell className="font-medium">{record.category}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className={getTypeColor(record.type)}>
+                      {record.type.charAt(0).toUpperCase() + record.type.slice(1)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground max-w-[200px] truncate">
+                    {record.description || "-"}
+                  </TableCell>
+                  <TableCell className="text-right font-semibold">
+                    Rp {Number(record.amount).toLocaleString("id-ID")}
+                  </TableCell>
+                  <TableCell>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-100 dark:hover:bg-red-900/20"
+                      onClick={() => handleDelete(record.record_id)}
+                      disabled={isDeleting === record.record_id}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

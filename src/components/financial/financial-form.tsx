@@ -25,7 +25,8 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
   const { toast } = useToast();
 
   const form = useForm<FinancialFormValues>({
-    resolver: zodResolver(financialFormSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(financialFormSchema) as any,
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
       category: "",
@@ -92,19 +93,26 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-background rounded-lg shadow-lg w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between p-4 border-b">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
+      <div 
+        className="fixed inset-0 -z-10" 
+        onClick={() => setIsOpen(false)}
+      />
+      <div className="bg-background border-t border-white/10 sm:border border-white/5 rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-300 pb-10 sm:pb-0">
+        {/* Handle bar on mobile */}
+        <div className="mx-auto my-3 h-1.5 w-12 rounded-full bg-white/10 sm:hidden" />
+        
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
           <div>
-            <h2 className="text-lg font-semibold">Tambah Catatan Keuangan</h2>
-            <p className="text-sm text-muted-foreground">Masukkan rincian pengeluaran atau pemasukan Anda di sini.</p>
+            <h2 className="text-lg font-bold">Tambah Catatan Keuangan</h2>
+            <p className="text-xs text-muted-foreground">Masukkan rincian pengeluaran atau pemasukan Anda di sini.</p>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+          <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10">
             <X className="h-4 w-4" />
           </Button>
         </div>
         
-        <div className="p-4">
+        <div className="p-5 max-h-[80vh] overflow-y-auto">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -114,7 +122,7 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                   <FormItem>
                     <FormLabel>Tanggal</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input type="date" {...field} className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -129,14 +137,14 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                     <FormLabel>Tipe</FormLabel>
                     <FormControl>
                       <select 
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-11 w-full rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         {...field}
                       >
-                        <option value="">Pilih tipe...</option>
-                        <option value="income" className="text-green-600 font-medium">Income (Pemasukan)</option>
-                        <option value="need">Need (Kebutuhan)</option>
-                        <option value="want">Want (Keinginan)</option>
-                        <option value="investment">Investment (Investasi)</option>
+                        <option value="" className="bg-card">Pilih tipe...</option>
+                        <option value="income" className="text-green-600 font-medium bg-card">Income (Pemasukan)</option>
+                        <option value="need" className="bg-card">Need (Kebutuhan)</option>
+                        <option value="want" className="bg-card">Want (Keinginan)</option>
+                        <option value="investment" className="bg-card">Investment (Investasi)</option>
                       </select>
                     </FormControl>
                     <FormMessage />
@@ -153,7 +161,7 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                       {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori Pengeluaran (Misal: Makanan, Transportasi)"}
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder={isIncome ? "Sumber pemasukan" : "Kategori pengeluaran"} {...field} />
+                      <Input placeholder={isIncome ? "Sumber pemasukan" : "Kategori pengeluaran"} {...field} className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -167,7 +175,7 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                   <FormItem>
                     <FormLabel>Jumlah (Rp)</FormLabel>
                     <FormControl>
-                      <Input type="number" min="0" placeholder="0" {...field} />
+                      <Input type="number" min="0" placeholder="0" {...field} className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -183,7 +191,7 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                     <FormControl>
                       <Textarea 
                         placeholder="Tambahkan detail jika perlu" 
-                        className="resize-none" 
+                        className="resize-none bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl min-h-[80px]" 
                         {...field} 
                       />
                     </FormControl>
@@ -192,9 +200,9 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                 )}
               />
               
-              <div className="flex justify-end pt-4 gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>Batal</Button>
-                <Button type="submit" disabled={isLoading}>
+              <div className="flex justify-end pt-4 gap-3">
+                <Button type="button" variant="outline" onClick={() => setIsOpen(false)} className="rounded-xl border-white/10 hover:bg-white/5">Batal</Button>
+                <Button type="submit" disabled={isLoading} className="rounded-xl glow-primary-hover px-6">
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {isLoading ? "Menyimpan..." : "Simpan"}
                 </Button>

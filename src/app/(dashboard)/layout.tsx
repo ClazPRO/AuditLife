@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { logout } from "../(auth)/actions";
 import { ChatWidget } from "@/components/chat/chat-widget";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
+import { BottomNav } from "@/components/layout/bottom-nav";
 import { CursorLoader } from "@/components/layout/cursor-loader";
 import {
   LogOut,
@@ -73,10 +74,19 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex flex-col sm:py-4 sm:pl-64 w-full">
+      <div className="flex flex-col pb-24 sm:pb-0 sm:py-4 sm:pl-64 w-full">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          <div className="w-full flex-1">
+          <div className="w-full flex justify-between items-center">
             <h1 className="text-xl font-semibold sm:hidden">AuditLife</h1>
+            {/* Header user info/logout button on mobile only */}
+            <div className="sm:hidden flex items-center gap-2">
+              <span className="text-xs text-muted-foreground font-medium truncate max-w-[120px]">{userName}</span>
+              <form action={logout}>
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </form>
+            </div>
           </div>
         </header>
         <main className="flex-1 items-start p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -85,6 +95,7 @@ export default async function DashboardLayout({
       </div>
       
       {/* Utility Components */}
+      <BottomNav />
       <CursorLoader />
       <ChatWidget />
     </div>

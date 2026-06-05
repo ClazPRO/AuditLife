@@ -73,43 +73,44 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label>Tanggal Mulai Minggu Ini</Label>
-          <Input type="date" {...form.register("week_start_date")} />
+          <Label className="text-sm font-medium">Tanggal Mulai Minggu Ini</Label>
+          <Input type="date" {...form.register("week_start_date")} className="h-11 rounded-xl bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm" />
           {form.formState.errors.week_start_date && (
             <p className="text-sm text-destructive">{form.formState.errors.week_start_date.message}</p>
           )}
         </div>
         <div className="space-y-2">
-          <Label>Tanggal Akhir Minggu Ini</Label>
-          <Input type="date" {...form.register("week_end_date")} />
+          <Label className="text-sm font-medium">Tanggal Akhir Minggu Ini</Label>
+          <Input type="date" {...form.register("week_end_date")} className="h-11 rounded-xl bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm" />
           {form.formState.errors.week_end_date && (
             <p className="text-sm text-destructive">{form.formState.errors.week_end_date.message}</p>
           )}
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium">Daftar Aktivitas</h3>
+          <h3 className="text-base font-semibold">Daftar Aktivitas</h3>
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={() => append({ category_id: "", duration: 0, productivity_type: "produktif", description: "" })}
+            className="rounded-xl border-white/10 hover:bg-white/5 h-9 text-xs"
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 mr-1.5" />
             Tambah Aktivitas
           </Button>
         </div>
 
         {fields.map((field, index) => (
-          <div key={field.id} className="p-4 border rounded-lg space-y-4 bg-card relative">
+          <div key={field.id} className="p-5 border border-white/5 rounded-2xl space-y-4 bg-white/[0.02] relative hover:bg-white/[0.03] transition-colors">
             {fields.length > 1 && (
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
+                className="absolute top-3 right-3 text-muted-foreground hover:text-destructive h-8 w-8 rounded-full hover:bg-white/5"
                 onClick={() => remove(index)}
               >
                 <Trash2 className="h-4 w-4" />
@@ -118,49 +119,49 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label>Kategori</Label>
+                <Label className="text-xs text-muted-foreground font-medium">Kategori</Label>
                 <select
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-11 w-full rounded-xl border border-white/10 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/50"
                   {...form.register(`activities.${index}.category_id` as const)}
                 >
-                  <option value="">Pilih Kategori...</option>
+                  <option value="" className="bg-card">Pilih Kategori...</option>
                   {activeCategories.map((c) => (
-                    <option key={c.category_id} value={c.category_id}>{c.category_name}</option>
+                    <option key={c.category_id} value={c.category_id} className="bg-card">{c.category_name}</option>
                   ))}
                 </select>
                 {form.formState.errors.activities?.[index]?.category_id && (
-                  <p className="text-sm text-destructive">{form.formState.errors.activities[index]?.category_id?.message}</p>
+                  <p className="text-xs text-destructive">{form.formState.errors.activities[index]?.category_id?.message}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label>Durasi (Menit)</Label>
-                <Input type="number" min="1" {...form.register(`activities.${index}.duration` as const)} />
+                <Label className="text-xs text-muted-foreground font-medium">Durasi (Menit)</Label>
+                <Input type="number" min="1" {...form.register(`activities.${index}.duration` as const)} className="h-11 rounded-xl bg-white/[0.01] border-white/10 focus:border-primary/50 text-sm" />
                 {form.formState.errors.activities?.[index]?.duration && (
-                  <p className="text-sm text-destructive">{form.formState.errors.activities[index]?.duration?.message}</p>
+                  <p className="text-xs text-destructive">{form.formState.errors.activities[index]?.duration?.message}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label>Sifat Aktivitas</Label>
+                <Label className="text-xs text-muted-foreground font-medium">Sifat Aktivitas</Label>
                 <select
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-11 w-full rounded-xl border border-white/10 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/50"
                   {...form.register(`activities.${index}.productivity_type` as const)}
                 >
-                  <option value="produktif">Produktif</option>
-                  <option value="non-produktif">Non-Produktif</option>
+                  <option value="produktif" className="bg-card">Produktif</option>
+                  <option value="non-produktif" className="bg-card">Non-Produktif</option>
                 </select>
                 {form.formState.errors.activities?.[index]?.productivity_type && (
-                  <p className="text-sm text-destructive">{form.formState.errors.activities[index]?.productivity_type?.message}</p>
+                  <p className="text-xs text-destructive">{form.formState.errors.activities[index]?.productivity_type?.message}</p>
                 )}
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Deskripsi Singkat</Label>
-              <Input placeholder="Apa yang Anda kerjakan?" {...form.register(`activities.${index}.description` as const)} />
+              <Label className="text-xs text-muted-foreground font-medium">Deskripsi Singkat</Label>
+              <Input placeholder="Apa yang Anda kerjakan?" {...form.register(`activities.${index}.description` as const)} className="h-11 rounded-xl bg-white/[0.01] border-white/10 focus:border-primary/50 text-sm" />
               {form.formState.errors.activities?.[index]?.description && (
-                <p className="text-sm text-destructive">{form.formState.errors.activities[index]?.description?.message}</p>
+                <p className="text-xs text-destructive">{form.formState.errors.activities[index]?.description?.message}</p>
               )}
             </div>
           </div>
@@ -171,21 +172,21 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
       </div>
 
       <div className="space-y-2">
-        <Label>Ringkasan Mingguan (Opsional)</Label>
+        <Label className="text-sm font-medium">Ringkasan Mingguan (Opsional)</Label>
         <Textarea 
           placeholder="Bagaimana perasaan Anda minggu ini secara umum?" 
-          className="min-h-[100px]"
+          className="min-h-[100px] rounded-xl bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm"
           {...form.register("summary")} 
         />
       </div>
 
       {error && (
-        <div className="p-3 bg-destructive/10 text-destructive rounded-md text-sm">
+        <div className="p-3 bg-destructive/10 text-destructive rounded-xl text-sm border border-destructive/20">
           {error}
         </div>
       )}
 
-      <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting}>
+      <Button type="submit" className="w-full sm:w-auto rounded-xl glow-primary-hover h-11 px-8 text-sm" disabled={isSubmitting}>
         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {isSubmitting ? "Menyimpan..." : "Simpan Audit Mingguan"}
       </Button>

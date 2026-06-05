@@ -9,7 +9,7 @@ export const financialFormSchema = z.object({
     message: "Jumlah harus lebih dari 0",
   }),
   type: z.enum(["income", "need", "want", "investment"], {
-    required_error: "Tipe pengeluaran/pemasukan harus dipilih.",
+    message: "Tipe pengeluaran/pemasukan harus dipilih.",
   }),
   description: z.string().optional(),
 });
