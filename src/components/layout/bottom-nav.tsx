@@ -8,6 +8,7 @@ import {
   ClipboardList,
   LineChart,
   Wallet,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
