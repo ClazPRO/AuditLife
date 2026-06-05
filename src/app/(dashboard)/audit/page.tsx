@@ -11,32 +11,24 @@ export default async function AuditPage() {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-10">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Weekly Audit</h2>
-        <p className="text-muted-foreground">
-          Catat aktivitas mingguan Anda untuk mendapatkan analisis dan rekomendasi produktivitas.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Formulir Pencatatan Aktivitas</CardTitle>
-          <CardDescription>
-            Isi data aktivitas Anda secara jujur selama satu minggu. Data ini akan digunakan untuk menghitung skor Anda.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Weekly Audit</h2>
+          <p className="text-muted-foreground">
+            Catat aktivitas mingguan Anda untuk mendapatkan analisis dan rekomendasi produktivitas.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
           {categories && categories.length === 0 && (
-            <div className="mb-6 p-4 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 rounded-md border border-yellow-500/20 text-sm">
-              <p className="font-semibold">Perhatian:</p>
-              <p>Belum ada kategori yang dikonfigurasi di database. Anda menggunakan kategori sementara (fallback). Hubungi admin untuk menambahkan kategori resmi.</p>
-            </div>
+            <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2.5 py-1 rounded-full border border-yellow-500/20">
+              Kategori Terbatas
+            </span>
           )}
           <ActivityForm categories={categories || []} />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
+      <Card className="border-white/5">
         <CardHeader>
           <CardTitle>Riwayat Weekly Audit</CardTitle>
           <CardDescription>
