@@ -76,7 +76,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Score Cards */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
         <Card className="neon-card-violet group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -147,7 +147,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <Card className="border-white/5">
           <CardHeader>
             <CardTitle>Overview Mingguan</CardTitle>
