@@ -34,7 +34,7 @@ export default function RootLayout({
         <div className="fixed inset-0 grid-pattern -z-10 opacity-30" />
         
         {/* Phone Mockup Frame Container */}
-        <div className="w-full h-screen sm:w-[410px] sm:h-[728px] sm:rounded-[36px] sm:border-[8px] sm:border-neutral-800 bg-background sm:shadow-[0_0_60px_rgba(0,0,0,0.8)] relative flex flex-col overflow-hidden">
+        <div className="w-full h-[100dvh] sm:w-[410px] sm:h-[728px] sm:rounded-[36px] sm:border-[8px] sm:border-neutral-800 bg-background sm:shadow-[0_0_60px_rgba(0,0,0,0.8)] relative flex flex-col overflow-hidden">
           {/* Status Bar / Notch spacer for desktop */}
           <div className="hidden sm:flex justify-center items-center h-6 bg-background/80 backdrop-blur-md w-full sticky top-0 z-30 shrink-0">
             <div className="h-4 w-28 bg-neutral-900 rounded-full border border-white/5 flex items-center justify-center">

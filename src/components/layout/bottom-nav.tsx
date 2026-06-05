@@ -46,8 +46,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="absolute bottom-5 inset-x-0 z-40 px-4 flex justify-center w-full">
-      <div className="flex h-16 w-full max-w-md items-center justify-around rounded-2xl border border-white/10 bg-card/75 px-2 shadow-2xl backdrop-blur-xl">
+    <div className="absolute bottom-0 inset-x-0 z-40 px-4 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] flex justify-center w-full pointer-events-none">
+      <div className="flex h-16 w-full max-w-md items-center justify-around rounded-2xl border border-white/10 bg-card/75 px-2 shadow-2xl backdrop-blur-xl pointer-events-auto">
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -57,7 +57,7 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "relative flex flex-col items-center justify-center gap-0.5 rounded-xl px-3 py-1 transition-all duration-300",
+                "relative flex-1 flex flex-col items-center justify-center gap-0.5 py-1 rounded-xl transition-all duration-300 min-h-[52px]",
                 isActive ? "scale-105" : "opacity-60 hover:opacity-100"
               )}
             >
@@ -69,7 +69,7 @@ export function BottomNav() {
               >
                 <Icon className={cn("h-5 w-5", isActive ? item.color : "text-muted-foreground")} />
               </div>
-              <span className={cn("text-[9px] font-medium tracking-wide transition-all duration-300", isActive ? "text-foreground font-semibold" : "text-muted-foreground")}>
+              <span className={cn("text-[10px] font-medium tracking-wide transition-all duration-300", isActive ? "text-foreground font-semibold" : "text-muted-foreground")}>
                 {item.title}
               </span>
             </Link>

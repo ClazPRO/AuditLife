@@ -49,7 +49,7 @@ export default async function DashboardLayout({
       </header>
 
       {/* Scrollable Main Body */}
-      <main className="flex-1 overflow-y-auto p-4 pb-28 no-scrollbar">
+      <main className="flex-1 overflow-y-auto p-4 pb-[calc(7.5rem+env(safe-area-inset-bottom,0px))] no-scrollbar">
         {children}
       </main>
       
