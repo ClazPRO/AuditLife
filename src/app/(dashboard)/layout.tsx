@@ -37,7 +37,7 @@ export default async function DashboardLayout({
       <div className="fixed inset-0 grid-pattern -z-10 opacity-50" />
       
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r border-white/5 bg-card/50 backdrop-blur-xl sm:flex">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r border-white/5 bg-card/50 backdrop-blur-xl xl:flex">
         {/* Logo */}
         <div className="flex h-16 items-center border-b border-white/5 px-4 lg:px-6">
           <Link href="/" className="flex items-center gap-2">
@@ -74,12 +74,12 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex flex-col pb-24 sm:pb-0 sm:py-4 sm:pl-64 w-full">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <div className="flex flex-col pb-24 xl:pb-0 xl:py-4 xl:pl-64 w-full">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 xl:static xl:h-auto xl:border-0 xl:bg-transparent xl:px-6">
           <div className="w-full flex justify-between items-center">
-            <h1 className="text-xl font-semibold sm:hidden">AuditLife</h1>
+            <h1 className="text-xl font-semibold xl:hidden">AuditLife</h1>
             {/* Header user info/logout button on mobile only */}
-            <div className="sm:hidden flex items-center gap-2">
+            <div className="xl:hidden flex items-center gap-2">
               <span className="text-xs text-muted-foreground font-medium truncate max-w-[120px]">{userName}</span>
               <form action={logout}>
                 <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
@@ -89,7 +89,7 @@ export default async function DashboardLayout({
             </div>
           </div>
         </header>
-        <main className="flex-1 items-start p-4 sm:px-6 sm:py-0 md:gap-8">
+        <main className="flex-1 items-start p-4 xl:px-6 xl:py-0 md:gap-8">
           {children}
         </main>
       </div>
