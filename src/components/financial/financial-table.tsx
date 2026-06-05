@@ -4,14 +4,6 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteFinancialRecord } from "@/app/(dashboard)/financial/actions";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
