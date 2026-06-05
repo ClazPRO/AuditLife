@@ -31,71 +31,52 @@ export default async function DashboardLayout({
   const userName = user.user_metadata?.name || user.email?.split("@")[0];
 
   return (
-    <div className="flex min-h-screen relative">
+    <div className="min-h-screen w-full bg-neutral-950 flex items-center justify-center p-0 sm:p-6 md:p-8 relative">
       {/* Subtle Background */}
-      <div className="fixed inset-0 bg-background -z-10" />
-      <div className="fixed inset-0 grid-pattern -z-10 opacity-50" />
+      <div className="fixed inset-0 bg-neutral-950 -z-10" />
+      <div className="fixed inset-0 grid-pattern -z-10 opacity-30" />
       
-      {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r border-white/5 bg-card/50 backdrop-blur-xl xl:flex">
-        {/* Logo */}
-        <div className="flex h-16 items-center border-b border-white/5 px-4 lg:px-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-              <Sparkles className="h-4 w-4 text-primary" />
-            </div>
-            <span className="text-xl font-bold tracking-tight">AuditLife</span>
-          </Link>
-        </div>
-        
-        {/* Navigation */}
-        <div className="flex-1 overflow-auto py-4">
-          <SidebarNav />
-        </div>
-        
-        {/* User Info */}
-        <div className="border-t border-white/5 p-4">
-          <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center ring-1 ring-white/10">
-              <User className="h-4 w-4 text-primary" />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-sm font-medium truncate">{userName}</span>
-              <span className="text-xs text-muted-foreground truncate">{user.email}</span>
-            </div>
+      {/* Phone container */}
+      <div className="w-full max-w-[440px] h-screen sm:h-[880px] sm:max-h-[92vh] sm:rounded-[40px] sm:border-[10px] sm:border-neutral-800 bg-background sm:shadow-[0_0_60px_rgba(0,0,0,0.8)] relative flex flex-col overflow-hidden">
+        {/* Status Bar / Notch spacer for desktop */}
+        <div className="hidden sm:flex justify-center items-center h-6 bg-background/80 backdrop-blur-md w-full sticky top-0 z-30 shrink-0">
+          <div className="h-4 w-28 bg-neutral-900 rounded-full border border-white/5 flex items-center justify-center">
+            <div className="h-1.5 w-1.5 rounded-full bg-primary/40 mr-2 animate-pulse" />
+            <span className="text-[9px] text-muted-foreground/80 font-mono tracking-widest">AUDITLIFE</span>
           </div>
-          <form action={logout}>
-            <Button variant="ghost" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground hover:bg-white/5">
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
-          </form>
         </div>
-      </aside>
 
-      {/* Main Content */}
-      <div className="flex flex-col pb-24 xl:pb-0 xl:py-4 xl:pl-64 w-full">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 xl:static xl:h-auto xl:border-0 xl:bg-transparent xl:px-6">
+        {/* Header */}
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 shrink-0">
           <div className="w-full flex justify-between items-center">
-            <h1 className="text-xl font-semibold xl:hidden">AuditLife</h1>
-            {/* Header user info/logout button on mobile only */}
-            <div className="xl:hidden flex items-center gap-2">
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              </div>
+              <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-primary to-violet-400 bg-clip-text text-transparent">AuditLife</span>
+            </Link>
+            {/* Header user info/logout button */}
+            <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground font-medium truncate max-w-[120px]">{userName}</span>
               <form action={logout}>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-full">
                   <LogOut className="h-4 w-4" />
                 </Button>
               </form>
             </div>
           </div>
         </header>
-        <main className="flex-1 items-start p-4 xl:px-6 xl:py-0 md:gap-8">
+
+        {/* Scrollable Main Body */}
+        <main className="flex-1 overflow-y-auto p-4 pb-28">
           {children}
         </main>
+        
+        {/* Bottom Navigation */}
+        <BottomNav />
       </div>
-      
+
       {/* Utility Components */}
-      <BottomNav />
       <CursorLoader />
       <ChatWidget />
     </div>
