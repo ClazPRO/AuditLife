@@ -35,14 +35,14 @@ export default async function FinancialAuditPage() {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto pb-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col gap-3">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Financial Audit</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-2xl font-bold tracking-tight">Financial Audit</h2>
+          <p className="text-xs text-muted-foreground mt-1">
             Pantau arus kas Anda. Catat pemasukan awal bulan dan kelola pengeluaran Anda.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pt-1">
           <FinancialForm defaultType="income" />
           <FinancialForm />
         </div>
