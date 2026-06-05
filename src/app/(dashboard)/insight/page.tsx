@@ -20,7 +20,7 @@ export default function InsightPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="flex flex-col gap-4">
         <Card className="border-primary/20 shadow-md">
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-lg">
