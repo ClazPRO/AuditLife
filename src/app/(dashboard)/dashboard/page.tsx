@@ -49,21 +49,35 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 max-w-6xl mx-auto pb-10">
-      {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-8">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="relative">
-          <p className="text-sm text-primary font-medium mb-1">{greeting} 👋</p>
-          <h2 className="text-3xl font-bold tracking-tight">{userName}</h2>
-          <p className="text-muted-foreground mt-1">
-            Berikut adalah ringkasan performa dan aktivitasmu.
-          </p>
+      {/* Welcome & Motivation Banner */}
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-violet-600/15 via-blue-600/10 to-transparent p-6 shadow-2xl">
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="relative flex flex-col gap-4">
+          <div>
+            <p className="text-[11px] text-primary font-semibold tracking-wider uppercase mb-1">{greeting} 👋</p>
+            <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">{userName}</h2>
+            
+            <div className="flex items-center gap-2 mt-2.5">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-violet-500/20 text-violet-300 border border-violet-500/30 neon-badge">
+                🔥 Streak: {hasAudits ? audits.length : 0} Minggu
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 neon-badge">
+                🏆 Level {hasAudits ? Math.min(5, Math.floor(audits.length / 2) + 1) : 1} Auditor
+              </span>
+            </div>
+          </div>
+          
+          <div className="border-t border-white/5 pt-3.5 mt-1">
+            <p className="text-xs text-muted-foreground italic leading-relaxed">
+              &ldquo;Setiap audit kecil yang kamu lakukan hari ini adalah investasi untuk versi terbaik dirimu besok. Tetap konsisten! 🚀&rdquo;
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Score Cards */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="border-white/5 bg-gradient-to-br from-violet-500/10 to-transparent hover:from-violet-500/15 transition-all duration-300 group">
+        <Card className="neon-card-violet group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Productivity Score
@@ -80,7 +94,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-white/5 bg-gradient-to-br from-blue-500/10 to-transparent hover:from-blue-500/15 transition-all duration-300 group">
+        <Card className="neon-card-blue group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Time Logged
@@ -97,7 +111,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-white/5 bg-gradient-to-br from-emerald-500/10 to-transparent hover:from-emerald-500/15 transition-all duration-300 group">
+        <Card className="neon-card-emerald group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Consistency</CardTitle>
             <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
@@ -112,7 +126,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-white/5 bg-gradient-to-br from-amber-500/10 to-transparent hover:from-amber-500/15 transition-all duration-300 group">
+        <Card className="neon-card-amber group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Balance
