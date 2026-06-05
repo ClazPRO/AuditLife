@@ -6,7 +6,8 @@
     "dev": "node --max-old-space-size=4096 node_modules/next/dist/bin/next dev",
     "build": "node --max-old-space-size=4096 node_modules/next/dist/bin/next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "git-watch": "node scripts/git-watch.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.80",

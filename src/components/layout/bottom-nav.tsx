@@ -1,5 +1,6 @@
 "use client";
 
+// Mobile bottom navigation bar for quick access
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
