@@ -42,7 +42,7 @@ export default async function FinancialAuditPage() {
             Pantau arus kas Anda. Catat pemasukan awal bulan dan kelola pengeluaran Anda.
           </p>
         </div>
-        <div className="flex items-center gap-2 pt-1">
+        <div className="grid grid-cols-2 gap-2.5 pt-1 w-full">
           <FinancialForm defaultType="income" />
           <FinancialForm />
         </div>

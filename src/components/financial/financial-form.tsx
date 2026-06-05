@@ -78,14 +78,14 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
   if (!isOpen) {
     if (defaultType === "income") {
       return (
-        <Button className="gap-2 bg-green-600 hover:bg-green-700 text-white" onClick={() => setIsOpen(true)}>
+        <Button className="w-full gap-2 bg-green-600 hover:bg-green-700 text-white" onClick={() => setIsOpen(true)}>
           <Plus className="h-4 w-4" />
           Tambah Pemasukan
         </Button>
       );
     }
     return (
-      <Button className="gap-2" onClick={() => setIsOpen(true)}>
+      <Button className="w-full gap-2" onClick={() => setIsOpen(true)}>
         <Plus className="h-4 w-4" />
         Tambah Pengeluaran
       </Button>
