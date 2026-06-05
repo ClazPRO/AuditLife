@@ -35,7 +35,7 @@ export default async function DashboardLayout({
       <div className="fixed inset-0 grid-pattern -z-10 opacity-30" />
       
       {/* Phone container */}
-      <div className="w-full max-w-[440px] h-screen sm:h-[880px] sm:max-h-[92vh] sm:rounded-[40px] sm:border-[10px] sm:border-neutral-800 bg-background sm:shadow-[0_0_60px_rgba(0,0,0,0.8)] relative flex flex-col overflow-hidden">
+      <div className="w-full h-screen sm:w-[410px] sm:h-[728px] sm:rounded-[36px] sm:border-[8px] sm:border-neutral-800 bg-background sm:shadow-[0_0_60px_rgba(0,0,0,0.8)] relative flex flex-col overflow-hidden">
         {/* Status Bar / Notch spacer for desktop */}
         <div className="hidden sm:flex justify-center items-center h-6 bg-background/80 backdrop-blur-md w-full sticky top-0 z-30 shrink-0">
           <div className="h-4 w-28 bg-neutral-900 rounded-full border border-white/5 flex items-center justify-center">
@@ -66,7 +66,7 @@ export default async function DashboardLayout({
         </header>
 
         {/* Scrollable Main Body */}
-        <main className="flex-1 overflow-y-auto p-4 pb-28">
+        <main className="flex-1 overflow-y-auto p-4 pb-28 no-scrollbar">
           {children}
         </main>
         
