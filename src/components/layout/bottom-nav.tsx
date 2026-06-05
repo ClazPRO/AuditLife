@@ -46,7 +46,7 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-5 inset-x-0 z-40 px-4 flex justify-center w-full xl:hidden">
+    <div className="absolute bottom-5 inset-x-0 z-40 px-4 flex justify-center w-full">
       <div className="flex h-16 w-full max-w-md items-center justify-around rounded-2xl border border-white/10 bg-card/75 px-2 shadow-2xl backdrop-blur-xl">
         {items.map((item) => {
           const Icon = item.icon;
