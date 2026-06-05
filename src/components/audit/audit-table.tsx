@@ -31,7 +31,7 @@ export function AuditTable({ records }: { records: AuditRecord[] }) {
   return (
     <div className="space-y-4">
       {/* Mobile view (cards) */}
-      <div className="grid gap-3 sm:hidden">
+      <div className="grid gap-3 xl:hidden">
         {records.map((record) => (
           <div 
             key={record.audit_id}
@@ -72,7 +72,7 @@ export function AuditTable({ records }: { records: AuditRecord[] }) {
       </div>
 
       {/* Desktop view (table) */}
-      <div className="hidden sm:block rounded-md border overflow-hidden">
+      <div className="hidden xl:block rounded-md border overflow-hidden">
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
