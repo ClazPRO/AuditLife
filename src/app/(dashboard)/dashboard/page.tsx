@@ -20,11 +20,12 @@ export default async function DashboardPage() {
   const latestAudit = hasAudits ? audits[0] : null;
 
   // Kalkulasi Skor
+  const totalTimeInHours = latestAudit ? latestAudit.total_time / 60 : 0;
   // 1. Productivity: berdasarkan total jam minggu ini (asumsi 40 jam = 100%)
-  const productivityScore = latestAudit ? Math.min(100, Math.round((latestAudit.total_time / 40) * 100)) : 0;
+  const productivityScore = latestAudit ? Math.min(100, Math.round((totalTimeInHours / 40) * 100)) : 0;
   
   // 2. Time Management: total jam minggu ini
-  const timeManagement = latestAudit ? `${latestAudit.total_time} Jam` : "--";
+  const timeManagement = latestAudit ? `${Math.floor(totalTimeInHours)}j ${latestAudit.total_time % 60}m` : "--";
   
   // 3. Consistency: jumlah minggu berturut-turut atau total audit
   const consistencyStr = hasAudits ? `${audits.length} Minggu` : "--";
@@ -151,7 +152,7 @@ export default async function DashboardPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Total Waktu</span>
-                    <span>{latestAudit.total_time} Jam</span>
+                    <span>{Math.floor(latestAudit.total_time / 60)}j {latestAudit.total_time % 60}m</span>
                   </div>
                   <div className="flex justify-between border-t border-white/10 pt-2 mt-2">
                     <span className="text-muted-foreground">Catatan</span>
