@@ -16,7 +16,7 @@ DROP TYPE IF EXISTS finance_type CASCADE;
 -- 1. Create Enums
 CREATE TYPE user_role AS ENUM ('user', 'admin', 'super_admin');
 CREATE TYPE activity_type AS ENUM ('produktif', 'non-produktif');
-CREATE TYPE finance_type AS ENUM ('need', 'want', 'investment');
+CREATE TYPE finance_type AS ENUM ('income', 'need', 'want', 'investment');
 
 -- 2. Create public.users table (extends auth.users)
 CREATE TABLE public.users (
@@ -31,6 +31,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view their own data" ON public.users FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can update their own data" ON public.users FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert themselves" ON public.users FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- 3. Create categories table
 CREATE TABLE public.categories (

@@ -3,14 +3,16 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { FinancialFormValues } from "@/lib/validations/financial";
+import { ensurePublicUser } from "@/lib/ensure-user";
 
 export async function getFinancialRecords() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await ensurePublicUser();
 
   if (!user) {
-    return { error: "Unauthorized" };
+    return { error: "Unauthorized", records: [] };
   }
+
+  const supabase = createClient();
 
   try {
     const { data: records, error } = await supabase
@@ -22,23 +24,25 @@ export async function getFinancialRecords() {
 
     if (error) {
       console.error("Get Records Error:", error);
-      return { error: "Gagal mengambil data keuangan" };
+      return { error: "Gagal mengambil data keuangan", records: [] };
     }
 
-    return { records };
+    return { records: records || [] };
   } catch (err) {
     console.error("Unexpected error:", err);
-    return { error: "Terjadi kesalahan sistem" };
+    return { error: "Terjadi kesalahan sistem", records: [] };
   }
 }
 
 export async function addFinancialRecord(data: FinancialFormValues) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  // Pastikan user ada di public.users (auto-create jika belum)
+  const user = await ensurePublicUser();
 
   if (!user) {
-    return { error: "Unauthorized" };
+    return { error: "Anda harus login terlebih dahulu." };
   }
+
+  const supabase = createClient();
 
   try {
     const { error } = await supabase
@@ -54,7 +58,7 @@ export async function addFinancialRecord(data: FinancialFormValues) {
 
     if (error) {
       console.error("Insert Record Error:", error);
-      return { error: "Gagal menyimpan data keuangan" };
+      return { error: `Gagal menyimpan data keuangan: ${error.message}` };
     }
 
     revalidatePath("/financial");
@@ -66,19 +70,20 @@ export async function addFinancialRecord(data: FinancialFormValues) {
 }
 
 export async function deleteFinancialRecord(recordId: string) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await ensurePublicUser();
 
   if (!user) {
     return { error: "Unauthorized" };
   }
+
+  const supabase = createClient();
 
   try {
     const { error } = await supabase
       .from("financial_records")
       .delete()
       .eq("record_id", recordId)
-      .eq("user_id", user.id); // Ensure they own the record
+      .eq("user_id", user.id);
 
     if (error) {
       console.error("Delete Record Error:", error);

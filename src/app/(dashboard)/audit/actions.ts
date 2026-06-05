@@ -3,18 +3,20 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { WeeklyAuditFormValues } from "@/lib/validations/audit";
+import { ensurePublicUser } from "@/lib/ensure-user";
 
 export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  // Pastikan user ada di public.users (auto-create jika belum)
+  const user = await ensurePublicUser();
 
   if (!user) {
-    return { error: "Unauthorized" };
+    return { error: "Anda harus login terlebih dahulu." };
   }
+
+  const supabase = createClient();
 
   try {
     // 1. Insert ke tabel weekly_audit
-    // Asumsi: total_time bisa dihitung dari jumlah durasi activities, tapi kita kalkulasi di sini
     const totalTime = data.activities.reduce((acc, curr) => acc + curr.duration, 0);
 
     const { data: auditData, error: auditError } = await supabase
@@ -31,7 +33,7 @@ export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
 
     if (auditError) {
       console.error("Audit Insert Error:", auditError);
-      return { error: "Gagal menyimpan data audit" };
+      return { error: `Gagal menyimpan data audit: ${auditError.message}` };
     }
 
     const auditId = auditData.audit_id;
@@ -52,9 +54,9 @@ export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
 
     if (activitiesError) {
       console.error("Activities Insert Error:", activitiesError);
-      // Rollback manual (optional, jika tidak pakai trigger/transaction)
+      // Rollback manual
       await supabase.from("weekly_audit").delete().eq("audit_id", auditId);
-      return { error: "Gagal menyimpan aktivitas" };
+      return { error: `Gagal menyimpan aktivitas: ${activitiesError.message}` };
     }
 
     revalidatePath("/dashboard");
@@ -68,12 +70,13 @@ export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
 }
 
 export async function getWeeklyAudits() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await ensurePublicUser();
 
   if (!user) {
     return { error: "Unauthorized", records: [] };
   }
+
+  const supabase = createClient();
 
   try {
     const { data, error } = await supabase
