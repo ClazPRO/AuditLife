@@ -58,6 +58,151 @@
   }
 }
 
+/* ===== DATE INPUT FIX FOR DARK MODE ===== */
+/* Fix ikon kalender dan jam yang hitam di dark mode */
+.dark input[type="date"]::-webkit-calendar-picker-indicator,
+.dark input[type="time"]::-webkit-calendar-picker-indicator,
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(0.8);
+  cursor: pointer;
+}
+
+/* ===== GLASS PANEL ===== */
 .glass-panel {
   @apply bg-background/60 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+/* ===== ANIMATED GRADIENT BACKGROUND ===== */
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    hsl(258 90% 5%) 0%,
+    hsl(224 71% 4%) 25%,
+    hsl(258 60% 8%) 50%,
+    hsl(224 71% 4%) 75%,
+    hsl(280 70% 6%) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== FLOATING ORBS (decorative bg) ===== */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: hsl(258 90% 66%);
+  top: -100px;
+  right: -100px;
+  animation: orbFloat1 20s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: hsl(200 90% 50%);
+  bottom: -100px;
+  left: -100px;
+  animation: orbFloat2 25s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 300px;
+  height: 300px;
+  background: hsl(330 80% 50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbFloat3 18s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 60px) scale(1.1); }
+  66% { transform: translate(30px, -30px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, -40px) scale(1.05); }
+  66% { transform: translate(-30px, 50px) scale(0.9); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  33% { transform: translate(-40%, -60%) scale(1.15); }
+  66% { transform: translate(-55%, -45%) scale(0.9); }
+}
+
+/* ===== GRID PATTERN OVERLAY ===== */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ===== FADE-IN ANIMATION ===== */
+.fade-up {
+  animation: fadeUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.fade-up-delay-1 { animation-delay: 0.1s; }
+.fade-up-delay-2 { animation-delay: 0.2s; }
+.fade-up-delay-3 { animation-delay: 0.3s; }
+.fade-up-delay-4 { animation-delay: 0.4s; }
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== GLOW EFFECT ===== */
+.glow-primary {
+  box-shadow: 0 0 30px -5px hsl(258 90% 66% / 0.3);
+}
+
+.glow-primary-hover:hover {
+  box-shadow: 0 0 40px -5px hsl(258 90% 66% / 0.5);
+  transition: box-shadow 0.3s ease;
+}
+
+/* ===== SHIMMER TEXT ===== */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    hsl(258 90% 66%) 0%,
+    hsl(200 90% 70%) 50%,
+    hsl(258 90% 66%) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }

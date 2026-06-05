@@ -9,6 +9,7 @@ import { CursorLoader } from "@/components/layout/cursor-loader";
 import {
   LogOut,
   User,
+  Sparkles,
 } from "lucide-react";
 
 export default async function DashboardLayout({
@@ -26,34 +27,44 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  // Coba ambil profile name dari database jika diperlukan
-  // Untuk MVP, pakai email
   const userName = user.user_metadata?.name || user.email?.split("@")[0];
 
   return (
-    <div className="flex min-h-screen bg-muted/40 relative">
+    <div className="flex min-h-screen relative">
+      {/* Subtle Background */}
+      <div className="fixed inset-0 bg-background -z-10" />
+      <div className="fixed inset-0 grid-pattern -z-10 opacity-50" />
+      
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r bg-background sm:flex">
-        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <span className="text-xl font-bold text-primary tracking-tight">AuditLife</span>
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 flex-col border-r border-white/5 bg-card/50 backdrop-blur-xl sm:flex">
+        {/* Logo */}
+        <div className="flex h-16 items-center border-b border-white/5 px-4 lg:px-6">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
+              <Sparkles className="h-4 w-4 text-primary" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">AuditLife</span>
           </Link>
         </div>
+        
+        {/* Navigation */}
         <div className="flex-1 overflow-auto py-4">
           <SidebarNav />
         </div>
-        <div className="mt-auto border-t p-4">
+        
+        {/* User Info */}
+        <div className="border-t border-white/5 p-4">
           <div className="flex items-center gap-3 mb-4 px-2">
-            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center ring-1 ring-white/10">
               <User className="h-4 w-4 text-primary" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-medium truncate max-w-[150px]">{userName}</span>
-              <span className="text-xs text-muted-foreground truncate max-w-[150px]">{user.email}</span>
+            <div className="flex flex-col min-w-0">
+              <span className="text-sm font-medium truncate">{userName}</span>
+              <span className="text-xs text-muted-foreground truncate">{user.email}</span>
             </div>
           </div>
           <form action={logout}>
-            <Button variant="ghost" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground">
+            <Button variant="ghost" className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground hover:bg-white/5">
               <LogOut className="h-4 w-4" />
               Logout
             </Button>
@@ -62,9 +73,8 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-64 w-full">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          {/* Mobile menu trigger could go here */}
+      <div className="flex flex-col sm:py-4 sm:pl-64 w-full">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <div className="w-full flex-1">
             <h1 className="text-xl font-semibold sm:hidden">AuditLife</h1>
           </div>

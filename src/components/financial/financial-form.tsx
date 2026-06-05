@@ -35,6 +35,9 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
     },
   });
 
+  const selectedType = form.watch("type");
+  const isIncome = selectedType === "income";
+
   async function onSubmit(data: FinancialFormValues) {
     setIsLoading(true);
     try {
@@ -146,9 +149,11 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kategori (Misal: Makanan, Transportasi)</FormLabel>
+                    <FormLabel>
+                      {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori Pengeluaran (Misal: Makanan, Transportasi)"}
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="Kategori pengeluaran" {...field} />
+                      <Input placeholder={isIncome ? "Sumber pemasukan" : "Kategori pengeluaran"} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
