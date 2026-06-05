@@ -62,7 +62,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Score Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3">
         <Card className="border-white/5 bg-gradient-to-br from-violet-500/10 to-transparent hover:from-violet-500/15 transition-all duration-300 group">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -133,8 +133,8 @@ export default async function DashboardPage() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 border-white/5">
+      <div className="flex flex-col gap-4">
+        <Card className="border-white/5">
           <CardHeader>
             <CardTitle>Overview Mingguan</CardTitle>
             <CardDescription>
@@ -184,7 +184,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-3 border-white/5">
+        <Card className="border-white/5">
           <CardHeader>
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
