@@ -93,14 +93,14 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-end xl:items-center justify-center bg-black/60 backdrop-blur-sm p-0 xl:p-4 animate-in fade-in duration-200">
       <div 
         className="fixed inset-0 -z-10" 
         onClick={() => setIsOpen(false)}
       />
-      <div className="bg-background border-t border-white/10 sm:border border-white/5 rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-300 pb-10 sm:pb-0">
+      <div className="bg-background border-t border-white/10 xl:border border-white/5 rounded-t-3xl xl:rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in slide-in-from-bottom xl:slide-in-from-bottom-0 xl:zoom-in-95 duration-300 pb-10 xl:pb-0">
         {/* Handle bar on mobile */}
-        <div className="mx-auto my-3 h-1.5 w-12 rounded-full bg-white/10 sm:hidden" />
+        <div className="mx-auto my-3 h-1.5 w-12 rounded-full bg-white/10 xl:hidden" />
         
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
           <div>
