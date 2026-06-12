@@ -27,10 +27,11 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // Melakukan fetch user untuk validasi session token
+  // Gunakan getSession() (baca JWT lokal dari cookie) bukan getUser() (network call ke Supabase)
+  // getUser() menyebabkan MIDDLEWARE_INVOCATION_TIMEOUT di Vercel Edge Runtime
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
 
   // Definisi rute yang tidak memerlukan autentikasi
   const isPublicRoute = 
@@ -39,14 +40,14 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname === '/';
 
   // Proteksi Rute: Jika belum login dan mengakses rute private, redirect ke /login
-  if (!user && !isPublicRoute) {
+  if (!session && !isPublicRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
   // Jika sudah login tapi mengakses halaman auth, redirect ke /dashboard
-  if (user && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
+  if (session && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)

@@ -27,7 +27,7 @@ Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia ya
     const modelMessages = await convertToModelMessages(messages);
 
     const result = await streamText({
-      model: google("models/gemini-1.5-flash"),
+      model: google("gemini-1.5-flash"),
       system: systemPrompt,
       messages: modelMessages,
       temperature: 0.7,
