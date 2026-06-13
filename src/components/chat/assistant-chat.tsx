@@ -1,14 +1,23 @@
 "use client";
 
-import { useState, useRef, useEffect, FormEvent } from "react";
+import { useRef, useEffect, FormEvent } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Send, User, Bot, Loader2, Sparkles, AlertCircle, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export function AssistantChat({ userName }: { userName: string }) {
-  const [inputValue, setInputValue] = useState("");
-  const { messages, sendMessage, status, error, setMessages } = useChat();
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const {
+    messages,
+    input = "",
+    handleInputChange,
+    handleSubmit,
+    status,
+    error,
+    setMessages,
+  } = useChat({ api: "/api/chat" });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isLoading = status === "submitted" || status === "streaming";
@@ -22,29 +31,30 @@ export function AssistantChat({ userName }: { userName: string }) {
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
-    sendMessage({ text: inputValue });
-    setInputValue("");
+    if (!input?.trim() || isLoading) return;
+    handleSubmit(e as any);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (isLoading) return;
-    sendMessage({ text: suggestion });
+    if (isLoading || !inputRef.current || !formRef.current) return;
+    // Set the native input value
+    const nativeInput = inputRef.current;
+    const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+    nativeSetter?.call(nativeInput, suggestion);
+    nativeInput.dispatchEvent(new Event("input", { bubbles: true }));
+    // Submit the form after a tick so React state updates
+    setTimeout(() => {
+      formRef.current?.requestSubmit();
+    }, 50);
   };
 
   const clearChat = () => {
     setMessages([]);
   };
 
-  // Helper to extract text content from message parts
+  // Helper to extract text content from message
   const getMessageText = (m: (typeof messages)[number]): string => {
-    if (m.parts && m.parts.length > 0) {
-      return m.parts
-        .filter((p): p is { type: "text"; text: string } => p.type === "text")
-        .map((p) => p.text)
-        .join("");
-    }
-    return "";
+    return m.content || "";
   };
 
   const suggestions = [
@@ -79,7 +89,7 @@ export function AssistantChat({ userName }: { userName: string }) {
       {/* Main chat area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-0">
         {messages.length === 0 ? (
-          /* Empty / Welcome state (Screen 6) */
+          /* Empty / Welcome state */
           <div className="flex flex-col items-center justify-center py-10 text-center space-y-6 animate-in fade-in duration-300">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse" />
@@ -114,7 +124,7 @@ export function AssistantChat({ userName }: { userName: string }) {
             </div>
           </div>
         ) : (
-          /* Chat history (Screen 7) */
+          /* Chat history */
           <div className="space-y-4 pt-2 pb-4">
             {messages.map((m) => (
               <div
@@ -171,12 +181,14 @@ export function AssistantChat({ userName }: { userName: string }) {
       {/* Input Message Area */}
       <div className="p-4 border-t border-white/5 bg-background/90 backdrop-blur-md shrink-0 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]">
         <form
+          ref={formRef}
           onSubmit={handleFormSubmit}
           className="flex items-center gap-2 max-w-md mx-auto"
         >
           <Input
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            ref={inputRef}
+            value={input}
+            onChange={handleInputChange}
             placeholder="Tulis pertanyaanmu..."
             className="flex-1 h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-xs rounded-xl px-4"
             disabled={isLoading}
@@ -185,7 +197,7 @@ export function AssistantChat({ userName }: { userName: string }) {
             type="submit" 
             size="icon" 
             className="h-11 w-11 rounded-xl shrink-0 glow-primary-hover"
-            disabled={isLoading || !inputValue.trim()}
+            disabled={isLoading || !input.trim()}
           >
             <Send className="h-4 w-4" />
           </Button>

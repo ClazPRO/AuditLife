@@ -1,44 +1,73 @@
-import { google } from "@ai-sdk/google";
-import { streamText, convertToModelMessages } from "ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
+    const body = await req.json();
+    const messages = body.messages ?? [];
 
-    // Check if API key is provided
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       return new Response(
-        JSON.stringify({ 
-          error: "API Key Google Gemini belum dikonfigurasi. Silakan tambahkan GOOGLE_GENERATIVE_AI_API_KEY di file .env.local Anda." 
-        }), 
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: "API Key belum dikonfigurasi." }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    const systemPrompt = `Anda adalah AuditLife Assistant, asisten AI cerdas dan ramah yang terintegrasi di dalam aplikasi AuditLife.
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      systemInstruction: `Anda adalah AuditLife Assistant, asisten AI cerdas dan ramah yang terintegrasi di dalam aplikasi AuditLife.
 AuditLife adalah platform pelacakan produktivitas dan keuangan mingguan.
 Tugas Anda adalah membantu pengguna dengan pertanyaan seputar produktivitas, manajemen keuangan, kehidupan sehari-hari, atau memberikan panduan tentang cara menggunakan aplikasi ini.
-Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia yang santai tapi sopan.`;
-
-    // Convert UI messages to model messages for AI SDK v6
-    const modelMessages = await convertToModelMessages(messages);
-
-    const result = await streamText({
-      model: google("gemini-1.5-flash"),
-      system: systemPrompt,
-      messages: modelMessages,
-      temperature: 0.7,
+Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia yang santai tapi sopan.`,
     });
 
-    return result.toUIMessageStreamResponse();
-  } catch (error) {
-    console.error("AI Chat error:", error);
+    // Convert messages to Gemini chat history format
+    const history = messages.slice(0, -1).map((m: any) => ({
+      role: m.role === "user" ? "user" : "model",
+      parts: [{ text: typeof m.content === "string" ? m.content : (m.parts?.map((p: any) => p.text).join("") ?? "") }],
+    }));
+
+    const lastMessage = messages[messages.length - 1];
+    const lastContent = typeof lastMessage.content === "string"
+      ? lastMessage.content
+      : (lastMessage.parts?.map((p: any) => p.text).join("") ?? "");
+
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessageStream(lastContent);
+
+    // Stream the response as plain text
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of result.stream) {
+            const text = chunk.text();
+            if (text) {
+              controller.enqueue(encoder.encode(text));
+            }
+          }
+          controller.close();
+        } catch (err: any) {
+          console.error("Stream error:", err?.message);
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-cache",
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
+  } catch (error: any) {
+    console.error("AI Chat error:", error?.message);
     return new Response(
-      JSON.stringify({ error: "Terjadi kesalahan saat memproses pesan." }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: "Terjadi kesalahan: " + error?.message }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }

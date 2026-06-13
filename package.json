@@ -10,8 +10,9 @@
     "git-watch": "node scripts/git-watch.mjs"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.80",
-    "@ai-sdk/react": "^3.0.197",
+    "@ai-sdk/google": "^2.0.75",
+    "@ai-sdk/react": "^2.0.203",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.4.0",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
