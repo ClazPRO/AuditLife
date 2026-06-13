@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, FormEvent } from "react";
+import { flushSync } from "react-dom";
 import { useChat } from "@ai-sdk/react";
 import { Send, User, Bot, Loader2, Sparkles, AlertCircle, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ export function AssistantChat({ userName }: { userName: string }) {
     status,
     error,
     setMessages,
-  } = useChat({ api: "/api/chat" });
+  } = useChat({ api: "/api/chat", streamProtocol: "text" });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isLoading = status === "submitted" || status === "streaming";
@@ -36,16 +37,14 @@ export function AssistantChat({ userName }: { userName: string }) {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (isLoading || !inputRef.current || !formRef.current) return;
-    // Set the native input value
-    const nativeInput = inputRef.current;
-    const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
-    nativeSetter?.call(nativeInput, suggestion);
-    nativeInput.dispatchEvent(new Event("input", { bubbles: true }));
-    // Submit the form after a tick so React state updates
-    setTimeout(() => {
-      formRef.current?.requestSubmit();
-    }, 50);
+    if (isLoading) return;
+    // flushSync forces React to update state synchronously before requestSubmit
+    flushSync(() => {
+      handleInputChange({
+        target: { value: suggestion },
+      } as React.ChangeEvent<HTMLInputElement>);
+    });
+    formRef.current?.requestSubmit();
   };
 
   const clearChat = () => {
