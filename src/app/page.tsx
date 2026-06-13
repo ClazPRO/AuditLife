@@ -85,13 +85,18 @@ export default function Home() {
           {/* Glowing backdrop for logo */}
           <div className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-primary/20 blur-[80px] rounded-full pointer-events-none" style={{ zIndex: -1 }} />
           
-          <div className="relative w-40 h-40 md:w-56 md:h-56 mb-4 flex items-center justify-center">
-            {/* Pure SVG Custom Logo replacing the PNG */}
-            <svg viewBox="0 0 100 100" fill="none" className="w-full h-full drop-shadow-[0_0_20px_rgba(249,115,22,0.6)]">
-              <path d="M 25 80 L 50 20 L 75 80" stroke="#f97316" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M 35 55 L 75 35" stroke="#ea580c" strokeWidth="8" strokeLinecap="round" />
-              <polygon points="75,35 60,30 70,20" fill="#ea580c" />
-            </svg>
+          <div className="relative w-48 h-48 md:w-64 md:h-64 mb-2 flex items-center justify-center">
+            {/* AI Generated Logo with perfect edge blending */}
+            <img 
+              src="/logo.png" 
+              alt="AuditLife Logo" 
+              className="object-contain w-full h-full mix-blend-screen"
+              style={{
+                filter: "contrast(1.2) drop-shadow(0 0 20px rgba(249,115,22,0.4))",
+                WebkitMaskImage: "radial-gradient(circle, black 55%, transparent 72%)",
+                maskImage: "radial-gradient(circle, black 55%, transparent 72%)"
+              }}
+            />
           </div>
           
           <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent text-center">
