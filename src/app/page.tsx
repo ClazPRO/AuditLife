@@ -17,11 +17,44 @@ export default function Home() {
       <div className="orb orb-2 opacity-20" style={{ zIndex: -5 }} />
       <div className="orb orb-3 opacity-20" style={{ zIndex: -5 }} />
 
+      {/* ── Decorative concentric rings (top-right) ── */}
+      <div className="ornament-ring absolute -top-32 -right-32 w-[420px] h-[420px]" style={{ zIndex: -4 }} />
+      <div className="ornament-ring absolute -top-20 -right-20 w-[280px] h-[280px]" style={{ zIndex: -4 }} />
+      <div className="ornament-ring absolute -top-6 -right-6 w-[160px] h-[160px]" style={{ zIndex: -4 }} />
+
+      {/* ── Decorative rings (bottom-left) ── */}
+      <div className="ornament-ring absolute -bottom-28 -left-28 w-[360px] h-[360px]" style={{ zIndex: -4 }} />
+      <div className="ornament-ring absolute -bottom-14 -left-14 w-[220px] h-[220px]" style={{ zIndex: -4 }} />
+
+      {/* ── Floating geometric SVG ornaments ── */}
+      <svg className="absolute top-16 left-6 opacity-[0.07] animate-spin" style={{ animationDuration: "40s", zIndex: -4 }} width="80" height="80" viewBox="0 0 80 80">
+        <polygon points="40,4 76,62 4,62" fill="none" stroke="#f97316" strokeWidth="1.5" />
+        <polygon points="40,14 68,58 12,58" fill="none" stroke="#f97316" strokeWidth="1" />
+      </svg>
+      <svg className="absolute bottom-24 right-8 opacity-[0.08]" style={{ animation: "orbFloat2 22s ease-in-out infinite", zIndex: -4 }} width="60" height="60" viewBox="0 0 60 60">
+        <rect x="8" y="8" width="44" height="44" rx="6" fill="none" stroke="#fb923c" strokeWidth="1.5" transform="rotate(20 30 30)" />
+        <rect x="16" y="16" width="28" height="28" rx="4" fill="none" stroke="#fb923c" strokeWidth="1" transform="rotate(20 30 30)" />
+      </svg>
+      <svg className="absolute top-1/2 right-4 -translate-y-1/2 opacity-[0.06]" style={{ animation: "orbFloat1 30s ease-in-out infinite", zIndex: -4 }} width="50" height="50" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="20" fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 4" />
+        <circle cx="25" cy="25" r="10" fill="none" stroke="#f97316" strokeWidth="1" strokeDasharray="3 3" />
+      </svg>
+      {/* Small plus marks */}
+      {[[15, 55], [85, 25], [70, 70], [25, 35]].map(([x, y], i) => (
+        <svg key={i} className="absolute opacity-[0.12]" style={{ left: `${x}%`, top: `${y}%`, zIndex: -4, animation: `orbFloat${(i % 3) + 1} ${18 + i * 4}s ease-in-out infinite` }} width="16" height="16" viewBox="0 0 16 16">
+          <line x1="8" y1="0" x2="8" y2="16" stroke="#f97316" strokeWidth="1.5" />
+          <line x1="0" y1="8" x2="16" y2="8" stroke="#f97316" strokeWidth="1.5" />
+        </svg>
+      ))}
+
+      {/* ── Horizontal glow line ── */}
+      <div className="absolute top-1/2 left-0 w-full h-px opacity-10 -translate-y-16" style={{ background: "linear-gradient(90deg, transparent, #f97316, transparent)", zIndex: -4 }} />
+
       {/* ── Background: Floating UI Cards (Glassmorphism Mockups) ── */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none hidden sm:block">
         
         {/* Card 1: Left */}
-        <div className="absolute top-[20%] left-[-5%] md:left-[5%] lg:left-[10%] w-64 h-40 bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-3xl p-5 shadow-2xl transform -rotate-12 hover:rotate-0 transition-all duration-700 opacity-60">
+        <div className="absolute top-[20%] left-[5%] lg:left-[10%] w-64 h-40 bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-3xl p-5 shadow-2xl transform -rotate-12 hover:rotate-0 transition-all duration-700 opacity-60">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-2xl bg-orange-500/20 flex items-center justify-center">
               <Activity className="h-5 w-5 text-orange-500" />
@@ -39,7 +72,7 @@ export default function Home() {
         </div>
 
         {/* Card 2: Right */}
-        <div className="absolute top-[30%] right-[-10%] md:right-[5%] lg:right-[15%] w-56 h-48 bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-3xl p-5 shadow-2xl transform rotate-12 hover:rotate-0 transition-all duration-700 opacity-60 flex flex-col items-center justify-center gap-3">
+        <div className="absolute top-[30%] right-[5%] lg:right-[15%] w-56 h-48 bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-3xl p-5 shadow-2xl transform rotate-12 hover:rotate-0 transition-all duration-700 opacity-60 flex flex-col items-center justify-center gap-3">
           <div className="relative">
             <svg className="w-20 h-20 -rotate-90" viewBox="0 0 96 96">
               <circle cx="48" cy="48" r="36" fill="none" stroke="rgba(249, 115, 22, 0.2)" strokeWidth="8" />
@@ -95,17 +128,17 @@ export default function Home() {
         </div>
 
         {/* Headline */}
-        <div className="fade-up fade-up-delay-1 text-center space-y-4 max-w-2xl relative">
+        <div className="fade-up fade-up-delay-1 text-center space-y-3 max-w-2xl relative px-4">
           {/* Subtle glow behind text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[150%] bg-primary/10 blur-[100px] -z-10 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[150%] bg-primary/10 blur-[80px] -z-10 rounded-full pointer-events-none" />
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter leading-[1.1]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-[1.2]">
             Kendalikan Waktumu.
           </h1>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter leading-[1.1] shimmer-text pb-2">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-[1.2] shimmer-text pb-1">
             Desain Masa Depanmu.
           </h1>
-          <p className="mt-6 mx-auto max-w-[400px] text-sm sm:text-base text-muted-foreground/90 leading-relaxed font-medium">
+          <p className="mt-4 mx-auto max-w-[360px] text-xs sm:text-sm text-muted-foreground/90 leading-relaxed font-medium">
             Tinggalkan pencatatan manual. AuditLife menganalisis rutinitas mingguan dan keuanganmu dengan kecerdasan buatan.
           </p>
         </div>
