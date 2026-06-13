@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useEffect, FormEvent } from "react";
-import { flushSync } from "react-dom";
+import { useRef, useEffect, useState, FormEvent } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Send, User, Bot, Loader2, Sparkles, AlertCircle, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,8 @@ export function AssistantChat({ userName }: { userName: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     messages,
-    input = "",
+    input,
+    setInput,
     handleInputChange,
     handleSubmit,
     status,
@@ -20,6 +20,7 @@ export function AssistantChat({ userName }: { userName: string }) {
     setMessages,
   } = useChat({ api: "/api/chat", streamProtocol: "text" });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [pendingSuggestion, setPendingSuggestion] = useState<string | null>(null);
 
   const isLoading = status === "submitted" || status === "streaming";
 
@@ -32,19 +33,22 @@ export function AssistantChat({ userName }: { userName: string }) {
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!input?.trim() || isLoading) return;
+    if (!(input ?? "").trim() || isLoading) return;
     handleSubmit(e as any);
   };
 
+  // When pendingSuggestion is set, input has been updated — now submit
+  useEffect(() => {
+    if (pendingSuggestion !== null && input === pendingSuggestion) {
+      setPendingSuggestion(null);
+      formRef.current?.requestSubmit();
+    }
+  }, [input, pendingSuggestion]);
+
   const handleSuggestionClick = (suggestion: string) => {
     if (isLoading) return;
-    // flushSync forces React to update state synchronously before requestSubmit
-    flushSync(() => {
-      handleInputChange({
-        target: { value: suggestion },
-      } as React.ChangeEvent<HTMLInputElement>);
-    });
-    formRef.current?.requestSubmit();
+    setInput(suggestion);
+    setPendingSuggestion(suggestion);
   };
 
   const clearChat = () => {
@@ -196,7 +200,7 @@ export function AssistantChat({ userName }: { userName: string }) {
             type="submit" 
             size="icon" 
             className="h-11 w-11 rounded-xl shrink-0 glow-primary-hover"
-            disabled={isLoading || !input.trim()}
+            disabled={isLoading || !(input ?? "").trim()}
           >
             <Send className="h-4 w-4" />
           </Button>
