@@ -27,25 +27,25 @@
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
+    --background: 20 15% 4%;
+    --foreground: 30 10% 97%;
     --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
-    --primary: 258 90% 66%; /* Premium Violet */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 24 95% 53%; /* Premium Orange */
+    --primary-foreground: 0 0% 5%;
+    --secondary: 20 30% 12%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 20 25% 12%;
+    --muted-foreground: 30 15% 60%;
+    --accent: 20 30% 12%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 342.9 89.2% 53.3%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 258 90% 66%;
+    --border: 20 25% 15%;
+    --input: 20 25% 15%;
+    --ring: 24 95% 53%;
   }
 }
 
@@ -76,11 +76,11 @@
 .gradient-bg {
   background: linear-gradient(
     135deg,
-    hsl(258 90% 5%) 0%,
-    hsl(224 71% 4%) 25%,
-    hsl(258 60% 8%) 50%,
-    hsl(224 71% 4%) 75%,
-    hsl(280 70% 6%) 100%
+    hsl(20 80% 5%) 0%,
+    hsl(15 60% 4%) 25%,
+    hsl(25 70% 7%) 50%,
+    hsl(15 60% 4%) 75%,
+    hsl(30 80% 6%) 100%
   );
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -104,25 +104,25 @@
 .orb-1 {
   width: 500px;
   height: 500px;
-  background: hsl(258 90% 66%);
-  top: -100px;
-  right: -100px;
+  background: hsl(24 95% 53%);
+  top: -150px;
+  right: -150px;
   animation: orbFloat1 20s ease-in-out infinite;
 }
 
 .orb-2 {
   width: 400px;
   height: 400px;
-  background: hsl(200 90% 50%);
-  bottom: -100px;
-  left: -100px;
+  background: hsl(38 95% 60%);
+  bottom: -120px;
+  left: -120px;
   animation: orbFloat2 25s ease-in-out infinite;
 }
 
 .orb-3 {
-  width: 300px;
-  height: 300px;
-  background: hsl(330 80% 50%);
+  width: 320px;
+  height: 320px;
+  background: hsl(10 90% 55%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -179,11 +179,11 @@
 
 /* ===== GLOW EFFECT ===== */
 .glow-primary {
-  box-shadow: 0 0 30px -5px hsl(258 90% 66% / 0.3);
+  box-shadow: 0 0 30px -5px hsl(24 95% 53% / 0.4);
 }
 
 .glow-primary-hover:hover {
-  box-shadow: 0 0 40px -5px hsl(258 90% 66% / 0.5);
+  box-shadow: 0 0 40px -5px hsl(24 95% 53% / 0.6);
   transition: box-shadow 0.3s ease;
 }
 
@@ -191,9 +191,9 @@
 .shimmer-text {
   background: linear-gradient(
     90deg,
-    hsl(258 90% 66%) 0%,
-    hsl(200 90% 70%) 50%,
-    hsl(258 90% 66%) 100%
+    hsl(24 95% 53%) 0%,
+    hsl(38 100% 65%) 50%,
+    hsl(24 95% 53%) 100%
   );
   background-size: 200% 100%;
   -webkit-background-clip: text;
@@ -219,25 +219,25 @@
 
 /* Neon border & card shadow glows */
 .neon-card-violet {
-  border: 1.5px solid rgba(167, 139, 250, 0.35) !important;
-  box-shadow: 0 0 15px -3px rgba(167, 139, 250, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  background: rgba(15, 10, 30, 0.7) !important;
+  border: 1.5px solid rgba(249, 115, 22, 0.35) !important;
+  box-shadow: 0 0 15px -3px rgba(249, 115, 22, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(25, 10, 5, 0.7) !important;
   transition: all 0.3s ease-in-out;
 }
 .neon-card-violet:hover {
-  border-color: rgba(167, 139, 250, 0.7) !important;
-  box-shadow: 0 0 25px -3px rgba(167, 139, 250, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(249, 115, 22, 0.7) !important;
+  box-shadow: 0 0 25px -3px rgba(249, 115, 22, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 .neon-card-blue {
-  border: 1.5px solid rgba(96, 165, 250, 0.35) !important;
-  box-shadow: 0 0 15px -3px rgba(96, 165, 250, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  background: rgba(10, 15, 35, 0.7) !important;
+  border: 1.5px solid rgba(251, 146, 60, 0.35) !important;
+  box-shadow: 0 0 15px -3px rgba(251, 146, 60, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(25, 15, 5, 0.7) !important;
   transition: all 0.3s ease-in-out;
 }
 .neon-card-blue:hover {
-  border-color: rgba(96, 165, 250, 0.7) !important;
-  box-shadow: 0 0 25px -3px rgba(96, 165, 250, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(251, 146, 60, 0.7) !important;
+  box-shadow: 0 0 25px -3px rgba(251, 146, 60, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 .neon-card-emerald {
@@ -254,7 +254,7 @@
 .neon-card-amber {
   border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
   box-shadow: 0 0 15px -3px rgba(251, 191, 36, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  background: rgba(30, 20, 10, 0.7) !important;
+  background: rgba(30, 20, 5, 0.7) !important;
   transition: all 0.3s ease-in-out;
 }
 .neon-card-amber:hover {
@@ -264,11 +264,34 @@
 
 /* Custom Neon Badge */
 .neon-badge {
-  box-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
   animation: pulse-glow 2s infinite alternate;
 }
 
 @keyframes pulse-glow {
-  0% { box-shadow: 0 0 5px rgba(167, 139, 250, 0.2); }
-  100% { box-shadow: 0 0 15px rgba(167, 139, 250, 0.5); }
+  0% { box-shadow: 0 0 5px rgba(249, 115, 22, 0.2); }
+  100% { box-shadow: 0 0 15px rgba(249, 115, 22, 0.5); }
 }
+
+/* ===== ORNAMENTAL DECORATIONS ===== */
+.ornament-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(249, 115, 22, 0.08);
+  pointer-events: none;
+}
+
+.ornament-dots {
+  background-image: radial-gradient(circle, rgba(249,115,22,0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.ornament-cross::before,
+.ornament-cross::after {
+  content: '';
+  position: absolute;
+  background: rgba(249, 115, 22, 0.15);
+  border-radius: 2px;
+}
+.ornament-cross::before { width: 1px; height: 20px; top: 0; left: 50%; }
+.ornament-cross::after  { width: 20px; height: 1px; top: 50%; left: 0; margin-top: -0.5px; }
