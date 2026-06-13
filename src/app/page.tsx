@@ -13,35 +13,64 @@ export default function Home() {
       <div className="absolute inset-0 grid-pattern -z-10 opacity-70" />
 
       {/* ── Background: Glowing Ambient Orbs ── */}
-      <div className="orb orb-1 opacity-20" style={{ zIndex: -5 }} />
-      <div className="orb orb-2 opacity-20" style={{ zIndex: -5 }} />
-      <div className="orb orb-3 opacity-20" style={{ zIndex: -5 }} />
+      <div className="orb orb-1 opacity-30" style={{ zIndex: -5 }} />
+      <div className="orb orb-2 opacity-30" style={{ zIndex: -5 }} />
+      <div className="orb orb-3 opacity-30" style={{ zIndex: -5 }} />
 
-      {/* ── Decorative concentric rings (top-right) ── */}
-      <div className="ornament-ring absolute -top-32 -right-32 w-[420px] h-[420px]" style={{ zIndex: -4 }} />
-      <div className="ornament-ring absolute -top-20 -right-20 w-[280px] h-[280px]" style={{ zIndex: -4 }} />
-      <div className="ornament-ring absolute -top-6 -right-6 w-[160px] h-[160px]" style={{ zIndex: -4 }} />
+      {/* ── Dynamic Floating Particles ── */}
+      {Array.from({ length: 15 }).map((_, i) => (
+        <div 
+          key={`particle-${i}`} 
+          className="absolute rounded-full bg-primary/40 blur-[1px]"
+          style={{
+            width: `${Math.random() * 6 + 2}px`,
+            height: `${Math.random() * 6 + 2}px`,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            zIndex: -4,
+            animation: `orbFloat${(i % 3) + 1} ${Math.random() * 10 + 15}s ease-in-out infinite alternate`,
+            animationDelay: `${Math.random() * 5}s`
+          }}
+        />
+      ))}
 
-      {/* ── Decorative rings (bottom-left) ── */}
-      <div className="ornament-ring absolute -bottom-28 -left-28 w-[360px] h-[360px]" style={{ zIndex: -4 }} />
-      <div className="ornament-ring absolute -bottom-14 -left-14 w-[220px] h-[220px]" style={{ zIndex: -4 }} />
+      {/* ── Pulsing Neon Dots ── */}
+      {[
+        { top: '20%', left: '80%' },
+        { top: '70%', left: '15%' },
+        { top: '40%', left: '90%' },
+        { top: '85%', left: '60%' }
+      ].map((pos, i) => (
+        <div key={`pulse-${i}`} className="absolute w-1.5 h-1.5 rounded-full bg-primary animate-pulse" style={{ ...pos, zIndex: -4 }}>
+          <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-75" />
+        </div>
+      ))}
+
+      {/* ── Decorative concentric rings (Animated) ── */}
+      <div className="ornament-ring absolute -top-32 -right-32 w-[420px] h-[420px] animate-[spin_60s_linear_infinite]" style={{ zIndex: -4 }} />
+      <div className="ornament-ring absolute -top-20 -right-20 w-[280px] h-[280px] animate-[spin_40s_linear_infinite_reverse]" style={{ zIndex: -4 }} />
+      <div className="ornament-ring absolute -top-6 -right-6 w-[160px] h-[160px] animate-[spin_20s_linear_infinite]" style={{ zIndex: -4 }} />
+
+      <div className="ornament-ring absolute -bottom-28 -left-28 w-[360px] h-[360px] animate-[spin_50s_linear_infinite_reverse]" style={{ zIndex: -4 }} />
+      <div className="ornament-ring absolute -bottom-14 -left-14 w-[220px] h-[220px] animate-[spin_30s_linear_infinite]" style={{ zIndex: -4 }} />
 
       {/* ── Floating geometric SVG ornaments ── */}
-      <svg className="absolute top-16 left-6 opacity-[0.07] animate-spin" style={{ animationDuration: "40s", zIndex: -4 }} width="80" height="80" viewBox="0 0 80 80">
+      <svg className="absolute top-16 left-6 opacity-[0.15] animate-[spin_30s_linear_infinite]" style={{ zIndex: -4 }} width="80" height="80" viewBox="0 0 80 80">
         <polygon points="40,4 76,62 4,62" fill="none" stroke="#f97316" strokeWidth="1.5" />
         <polygon points="40,14 68,58 12,58" fill="none" stroke="#f97316" strokeWidth="1" />
       </svg>
-      <svg className="absolute bottom-24 right-8 opacity-[0.08]" style={{ animation: "orbFloat2 22s ease-in-out infinite", zIndex: -4 }} width="60" height="60" viewBox="0 0 60 60">
+      <svg className="absolute bottom-24 right-8 opacity-[0.15]" style={{ animation: "orbFloat2 15s ease-in-out infinite", zIndex: -4 }} width="60" height="60" viewBox="0 0 60 60">
         <rect x="8" y="8" width="44" height="44" rx="6" fill="none" stroke="#fb923c" strokeWidth="1.5" transform="rotate(20 30 30)" />
         <rect x="16" y="16" width="28" height="28" rx="4" fill="none" stroke="#fb923c" strokeWidth="1" transform="rotate(20 30 30)" />
       </svg>
-      <svg className="absolute top-1/2 right-4 -translate-y-1/2 opacity-[0.06]" style={{ animation: "orbFloat1 30s ease-in-out infinite", zIndex: -4 }} width="50" height="50" viewBox="0 0 50 50">
-        <circle cx="25" cy="25" r="20" fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 4" />
-        <circle cx="25" cy="25" r="10" fill="none" stroke="#f97316" strokeWidth="1" strokeDasharray="3 3" />
+      <svg className="absolute top-1/2 right-4 -translate-y-1/2 opacity-[0.12]" style={{ animation: "orbFloat1 20s ease-in-out infinite", zIndex: -4 }} width="50" height="50" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="20" fill="none" stroke="#f97316" strokeWidth="1.5" strokeDasharray="4 4" className="animate-[spin_10s_linear_infinite]" style={{ transformOrigin: 'center' }} />
+        <circle cx="25" cy="25" r="10" fill="none" stroke="#f97316" strokeWidth="1" strokeDasharray="3 3" className="animate-[spin_15s_linear_infinite_reverse]" style={{ transformOrigin: 'center' }} />
       </svg>
+      
       {/* Small plus marks */}
       {[[15, 55], [85, 25], [70, 70], [25, 35]].map(([x, y], i) => (
-        <svg key={i} className="absolute opacity-[0.12]" style={{ left: `${x}%`, top: `${y}%`, zIndex: -4, animation: `orbFloat${(i % 3) + 1} ${18 + i * 4}s ease-in-out infinite` }} width="16" height="16" viewBox="0 0 16 16">
+        <svg key={`plus-${i}`} className="absolute opacity-[0.2]" style={{ left: `${x}%`, top: `${y}%`, zIndex: -4, animation: `orbFloat${(i % 3) + 1} ${12 + i * 3}s ease-in-out infinite` }} width="16" height="16" viewBox="0 0 16 16">
           <line x1="8" y1="0" x2="8" y2="16" stroke="#f97316" strokeWidth="1.5" />
           <line x1="0" y1="8" x2="16" y2="8" stroke="#f97316" strokeWidth="1.5" />
         </svg>
