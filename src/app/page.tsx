@@ -48,53 +48,53 @@ export default function Home() {
       ))}
 
       {/* ── MAIN CONTENT (Splash Screen Style) ── */}
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-5">
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-between px-5 pt-8 pb-6 md:py-10">
         
-        {/* Massive Logo Center */}
-        <div className="fade-up flex flex-col items-center justify-center transform -translate-y-12">
+        {/* Massive Logo Center (pushes other content, flex-1 ensures it takes available space) */}
+        <div className="fade-up flex-1 flex flex-col items-center justify-center w-full min-h-[300px]">
           {/* Glowing backdrop for logo */}
           <div className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-primary/20 blur-[80px] rounded-full pointer-events-none" />
           
-          <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(249,115,22,0.3)] border border-primary/20 mb-6">
-            <img src="/logo.png" alt="AuditLife Logo" className="object-cover w-full h-full" />
+          <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(249,115,22,0.3)] mb-6">
+            <img src="/logo.png" alt="AuditLife Logo" className="object-cover w-full h-full mix-blend-screen" />
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent text-center">
             AuditLife
           </h1>
-          <p className="mt-2 text-sm text-primary font-medium tracking-wide">
-            AI-POWERED SELF AUDIT
+          <p className="mt-2 text-xs md:text-sm text-primary font-medium tracking-wide text-center uppercase">
+            AI-Powered Self Audit
           </p>
         </div>
 
-        {/* Bottom Section: Features & CTAs */}
-        <div className="absolute bottom-0 left-0 w-full p-6 pb-10 flex flex-col items-center gap-8 bg-gradient-to-t from-background via-background/80 to-transparent">
+        {/* Bottom Section: Features & CTAs (naturally sits below without overlapping) */}
+        <div className="w-full flex flex-col items-center gap-6 mt-4">
           
           {/* Feature Icons */}
-          <div className="fade-up fade-up-delay-1 flex items-center justify-center gap-8 sm:gap-12 w-full max-w-md">
+          <div className="fade-up fade-up-delay-1 flex items-center justify-center gap-6 sm:gap-12 w-full max-w-md">
             {[
               { icon: Activity, label: "Weekly Audit", color: "text-orange-400" },
               { icon: Brain, label: "AI Insights", color: "text-amber-400" },
               { icon: Wallet, label: "Finances", color: "text-yellow-400" },
             ].map(({ icon: Icon, label, color }) => (
               <div key={label} className="flex flex-col items-center gap-2 group cursor-default">
-                <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300 group-hover:-translate-y-1 shadow-lg">
-                  <Icon className={`h-5 w-5 ${color} group-hover:scale-110 transition-transform`} />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/40 transition-all duration-300 group-hover:-translate-y-1 shadow-lg">
+                  <Icon className={`h-4 w-4 md:h-5 md:w-5 ${color} group-hover:scale-110 transition-transform`} />
                 </div>
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{label}</p>
+                <p className="text-[9px] md:text-[10px] font-bold text-muted-foreground uppercase tracking-wider text-center">{label}</p>
               </div>
             ))}
           </div>
 
           {/* CTA Buttons */}
           <div className="fade-up fade-up-delay-2 flex flex-col sm:flex-row gap-3 w-full max-w-sm">
-            <Button asChild size="lg" className="h-12 flex-1 glow-primary-hover text-sm rounded-xl font-bold shadow-[0_0_30px_rgba(249,115,22,0.25)]">
+            <Button asChild size="lg" className="h-11 md:h-12 flex-1 glow-primary-hover text-sm rounded-xl font-bold shadow-[0_0_30px_rgba(249,115,22,0.25)]">
               <Link href="/register">
                 Mulai Sekarang
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="h-12 flex-1 border-white/10 bg-white/[0.02] hover:bg-white/[0.08] backdrop-blur-sm text-sm rounded-xl font-medium">
+            <Button variant="outline" size="lg" asChild className="h-11 md:h-12 flex-1 border-white/10 bg-white/[0.02] hover:bg-white/[0.08] backdrop-blur-sm text-sm rounded-xl font-medium">
               <Link href="/login">
                 Masuk
               </Link>
@@ -102,7 +102,7 @@ export default function Home() {
           </div>
           
           {/* Copyright */}
-          <p className="text-[9px] text-muted-foreground/40 text-center mt-2">
+          <p className="text-[9px] md:text-[10px] text-muted-foreground/40 text-center mt-2">
             © {new Date().getFullYear()} AuditLife — All rights reserved.
           </p>
 
