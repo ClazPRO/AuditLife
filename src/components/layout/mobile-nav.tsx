@@ -64,10 +64,10 @@ export function MobileNav({ userName, userEmail }: MobileNavProps) {
         {/* Logo */}
         <div className="flex h-14 items-center justify-between border-b border-white/5 px-4">
           <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-              <Sparkles className="h-4 w-4 text-primary" />
+            <div className="h-8 w-8 relative rounded-lg overflow-hidden border border-primary/20 shadow-[0_0_10px_rgba(249,115,22,0.15)]">
+              <img src="/logo.png" alt="AuditLife Logo" className="object-cover w-full h-full" />
             </div>
-            <span className="text-xl font-bold tracking-tight">AuditLife</span>
+            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">AuditLife</span>
           </Link>
           <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-8 w-8">
             <X className="h-5 w-5" />

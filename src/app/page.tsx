@@ -67,8 +67,8 @@ export default function Home() {
       {/* ── HEADER ── */}
       <header className="relative z-20 px-6 h-16 flex items-center border-b border-white/5 bg-background/40 backdrop-blur-md shrink-0">
         <Link className="flex items-center gap-2.5 group" href="/">
-          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary/30 to-primary/5 flex items-center justify-center border border-primary/30 group-hover:border-primary/60 transition-colors shadow-[0_0_15px_rgba(249,115,22,0.15)]">
-            <Sparkles className="h-4 w-4 text-primary" />
+          <div className="h-8 w-8 relative rounded-xl overflow-hidden shadow-[0_0_15px_rgba(249,115,22,0.2)] border border-primary/20">
+            <img src="/logo.png" alt="AuditLife Logo" className="object-cover w-full h-full" />
           </div>
           <span className="font-extrabold text-[15px] tracking-tight">AuditLife</span>
         </Link>

@@ -30,10 +30,10 @@ export default async function DashboardLayout({
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-white/5 bg-background/80 backdrop-blur-md px-4 shrink-0">
         <div className="w-full flex justify-between items-center">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-primary/20 flex items-center justify-center">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <div className="h-7 w-7 relative rounded-lg overflow-hidden border border-primary/20 shadow-[0_0_10px_rgba(249,115,22,0.15)]">
+              <img src="/logo.png" alt="AuditLife Logo" className="object-cover w-full h-full" />
             </div>
-            <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-primary to-violet-400 bg-clip-text text-transparent">AuditLife</span>
+            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">AuditLife</span>
           </Link>
           {/* Header user info/logout button */}
           <div className="flex items-center gap-2">
