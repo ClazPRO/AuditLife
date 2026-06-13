@@ -1,64 +1,22 @@
 "use client";
 
-import { useRef, useEffect, useState, FormEvent } from "react";
-import { useChat } from "@ai-sdk/react";
-import { Send, User, Bot, Loader2, Sparkles, AlertCircle, History } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
+import { Send, User, Bot, Loader2, Sparkles, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+interface Message {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+}
+
 export function AssistantChat({ userName }: { userName: string }) {
-  const formRef = useRef<HTMLFormElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const {
-    messages,
-    input,
-    setInput,
-    handleInputChange,
-    handleSubmit,
-    status,
-    error,
-    setMessages,
-  } = useChat({ api: "/api/chat", streamProtocol: "text" });
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [pendingSuggestion, setPendingSuggestion] = useState<string | null>(null);
-
-  const isLoading = status === "submitted" || status === "streaming";
-
-  // Auto-scroll to bottom when messages update
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
-
-  const handleFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!(input ?? "").trim() || isLoading) return;
-    handleSubmit(e as any);
-  };
-
-  // When pendingSuggestion is set, input has been updated — now submit
-  useEffect(() => {
-    if (pendingSuggestion !== null && input === pendingSuggestion) {
-      setPendingSuggestion(null);
-      formRef.current?.requestSubmit();
-    }
-  }, [input, pendingSuggestion]);
-
-  const handleSuggestionClick = (suggestion: string) => {
-    if (isLoading) return;
-    setInput(suggestion);
-    setPendingSuggestion(suggestion);
-  };
-
-  const clearChat = () => {
-    setMessages([]);
-  };
-
-  // Helper to extract text content from message
-  const getMessageText = (m: (typeof messages)[number]): string => {
-    return m.content || "";
-  };
 
   const suggestions = [
     "Analisis minggu ini",
@@ -66,6 +24,91 @@ export function AssistantChat({ userName }: { userName: string }) {
     "Tips mengelola keuangan",
     "Buat rencana minggu depan",
   ];
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: text.trim(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
+    setError(null);
+
+    // Placeholder for streaming assistant reply
+    const assistantId = (Date.now() + 1).toString();
+    setMessages((prev) => [
+      ...prev,
+      { id: assistantId, role: "assistant", content: "" },
+    ]);
+
+    try {
+      const allMessages = [...messages, userMessage];
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: allMessages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `HTTP ${res.status}`);
+      }
+
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (!reader) throw new Error("Tidak ada response stream");
+
+      let fullText = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        fullText += decoder.decode(value, { stream: true });
+        // Update assistant message in real-time
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId ? { ...m, content: fullText } : m
+          )
+        );
+      }
+    } catch (err: any) {
+      setError("Gagal memuat balasan. Pastikan API Key Anda sudah diatur.");
+      // Remove empty assistant placeholder on error
+      setMessages((prev) => prev.filter((m) => m.id !== assistantId));
+      console.error("Chat error:", err?.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sendMessage(input);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    sendMessage(suggestion);
+  };
+
+  const clearChat = () => {
+    setMessages([]);
+    setError(null);
+    setInput("");
+  };
 
   return (
     <div className="flex-1 flex flex-col relative min-h-0 overflow-hidden bg-background">
@@ -75,11 +118,11 @@ export function AssistantChat({ userName }: { userName: string }) {
           <Sparkles className="h-4 w-4 text-primary animate-pulse" />
           AI Assistant
         </h2>
-        
+
         {messages.length > 0 && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={clearChat}
             className="text-xs text-muted-foreground hover:text-foreground h-8 px-2.5 rounded-xl border border-white/5 hover:bg-white/5"
           >
@@ -92,7 +135,7 @@ export function AssistantChat({ userName }: { userName: string }) {
       {/* Main chat area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-0">
         {messages.length === 0 ? (
-          /* Empty / Welcome state */
+          /* Welcome state */
           <div className="flex flex-col items-center justify-center py-10 text-center space-y-6 animate-in fade-in duration-300">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse" />
@@ -110,99 +153,94 @@ export function AssistantChat({ userName }: { userName: string }) {
               </p>
             </div>
 
-            {/* Suggestions list */}
+            {/* Suggestions */}
             <div className="w-full max-w-[280px] flex flex-col gap-2 pt-4">
               {suggestions.map((suggestion, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="w-full text-left px-4 py-3 text-xs font-medium rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-300 text-muted-foreground hover:text-foreground flex items-center justify-between group"
+                  disabled={isLoading}
+                  className="w-full text-left px-4 py-3 text-xs font-medium rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-300 text-muted-foreground hover:text-foreground flex items-center justify-between group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span>{suggestion}</span>
-                  <span className="text-[10px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                    Tanya &rarr;
+                  <span className="text-primary opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">
+                    Tanya →
                   </span>
                 </button>
               ))}
             </div>
           </div>
         ) : (
-          /* Chat history */
-          <div className="space-y-4 pt-2 pb-4">
-            {messages.map((m) => (
+          /* Messages */
+          <div className="space-y-4">
+            {messages.map((message) => (
               <div
-                key={m.id}
-                className={`flex gap-3 max-w-[85%] animate-in fade-in duration-200 ${
-                  m.role === "user" ? "ml-auto flex-row-reverse" : ""
+                key={message.id}
+                className={`flex gap-3 ${
+                  message.role === "user" ? "justify-end" : "justify-start"
                 }`}
               >
+                {message.role === "assistant" && (
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/20 border border-white/10">
+                    <Bot className="h-4 w-4 text-primary" />
+                  </div>
+                )}
+
                 <div
-                  className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center border border-white/5 ${
-                    m.role === "user" 
-                      ? "bg-primary text-white" 
-                      : "bg-white/[0.04] text-primary"
+                  className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-tr-sm"
+                      : "bg-white/[0.04] border border-white/5 text-foreground rounded-tl-sm"
                   }`}
                 >
-                  {m.role === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  {message.content === "" && message.role === "assistant" ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+                  ) : (
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  )}
                 </div>
-                <div
-                  className={`rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed whitespace-pre-wrap ${
-                    m.role === "user"
-                      ? "bg-primary text-white rounded-tr-none shadow-lg"
-                      : "bg-white/[0.03] border border-white/5 text-foreground rounded-tl-none"
-                  }`}
-                >
-                  {getMessageText(m)}
-                </div>
+
+                {message.role === "user" && (
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-violet-600 border border-white/10">
+                    <User className="h-4 w-4 text-white" />
+                  </div>
+                )}
               </div>
             ))}
-            
-            {isLoading && messages[messages.length - 1]?.role === "user" && (
-              <div className="flex gap-3 max-w-[85%] animate-in fade-in duration-200">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-white/[0.04] border border-white/5 text-primary">
-                  <Bot className="h-4 w-4" />
-                </div>
-                <div className="rounded-2xl px-3.5 py-2.5 text-xs bg-white/[0.03] border border-white/5 text-muted-foreground flex items-center gap-2 rounded-tl-none">
-                  <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" /> 
-                  Mengetik jawaban...
-                </div>
-              </div>
-            )}
-            
+
+            {/* Error message */}
             {error && (
-              <div className="flex items-center gap-2 text-center text-red-400 text-xs mt-2 bg-red-500/10 border border-red-500/20 p-3 rounded-xl max-w-[90%] mx-auto">
-                <AlertCircle className="h-4 w-4 text-red-400 shrink-0" />
-                <span>Gagal memuat balasan. Pastikan API Key Anda sudah diatur.</span>
+              <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs text-red-400">
+                <span>⚠ {error}</span>
               </div>
             )}
-            
+
             <div ref={messagesEndRef} />
           </div>
         )}
       </div>
 
-      {/* Input Message Area */}
-      <div className="p-4 border-t border-white/5 bg-background/90 backdrop-blur-md shrink-0 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]">
-        <form
-          ref={formRef}
-          onSubmit={handleFormSubmit}
-          className="flex items-center gap-2 max-w-md mx-auto"
-        >
+      {/* Input area */}
+      <div className="shrink-0 border-t border-white/5 bg-background/80 backdrop-blur-md p-3">
+        <form onSubmit={handleSubmit} className="flex items-center gap-2">
           <Input
-            ref={inputRef}
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => setInput(e.target.value)}
             placeholder="Tulis pertanyaanmu..."
-            className="flex-1 h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-xs rounded-xl px-4"
             disabled={isLoading}
+            className="flex-1 h-11 rounded-xl bg-white/[0.04] border-white/10 text-xs placeholder:text-muted-foreground/50 focus-visible:ring-primary/30 focus-visible:border-primary/40 disabled:opacity-60"
           />
-          <Button 
-            type="submit" 
-            size="icon" 
-            className="h-11 w-11 rounded-xl shrink-0 glow-primary-hover"
-            disabled={isLoading || !(input ?? "").trim()}
+          <Button
+            type="submit"
+            size="icon"
+            disabled={isLoading || !input.trim()}
+            className="h-11 w-11 rounded-xl shrink-0 bg-primary hover:bg-primary/90"
           >
-            <Send className="h-4 w-4" />
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
           </Button>
         </form>
       </div>
