@@ -2,8 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { ensurePublicUser } from "@/lib/ensure-user";
-import { google } from "@ai-sdk/google";
-import { generateText } from "ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import fs from "fs";
 import path from "path";
 
@@ -134,14 +133,15 @@ ${hasFinances ? JSON.stringify(finances, null, 2) : "Belum ada data transaksi fi
 
 Catatan penting: Jika data produktivitas atau finansial kosong, buatlah observasi umum dan berikan motivasi yang bersahabat agar user segera mulai mengisi data mereka.`;
 
-    const result = await generateText({
-      model: google("gemini-1.5-flash"),
-      system: systemPrompt,
-      prompt: userPrompt,
-      temperature: 0.7,
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      systemInstruction: systemPrompt,
     });
 
-    let text = result.text.trim();
+    const result = await model.generateContent(userPrompt);
+    let text = result.response.text().trim();
+
     // Strip markdown JSON code block if returned by Gemini
     if (text.startsWith("```json")) {
       text = text.slice(7);
