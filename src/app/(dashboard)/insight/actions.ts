@@ -112,26 +112,28 @@ export async function generateAIInsight() {
 
     // Build the system and data prompt for Gemini
     const systemPrompt = `Anda adalah AI Insight Generator untuk AuditLife.
-Tugas Anda adalah menganalisis data produktivitas (weekly audit) dan data finansial dari user, lalu memberikan observasi ringkas serta saran konkret/solutif untuk mereka.
-
-Format output Anda HARUS berupa JSON murni dengan struktur persis seperti berikut (jangan sertakan markdown block lainnya seperti \`\`\`json selain string JSON-nya saja):
+Analisis data produktivitas dan finansial user, lalu kembalikan JSON MURNI (tanpa markdown) dengan struktur PERSIS berikut:
 {
-  "productivityObservation": "observasi singkat tentang produktivitas",
-  "productivitySuggestion": "saran konkret untuk meningkatkan produktivitas",
-  "financialObservation": "observasi singkat tentang keuangan/kebiasaan belanja",
-  "financialSuggestion": "saran konkret untuk mengelola keuangan lebih baik"
+  "weeklyHighlight": "1 kalimat ringkasan kondisi user minggu ini",
+  "productivityScore": <angka 0-100 berdasarkan kualitas aktivitas>,
+  "productivityObservation": "1-2 kalimat observasi produktivitas",
+  "productivityTips": ["tip singkat 1", "tip singkat 2", "tip singkat 3"],
+  "topProductiveActivity": "nama aktivitas paling produktif (atau '-' jika kosong)",
+  "financialScore": <angka 0-100 berdasarkan kesehatan keuangan>,
+  "financialObservation": "1-2 kalimat observasi keuangan",
+  "financialTips": ["tip singkat 1", "tip singkat 2", "tip singkat 3"],
+  "biggestExpenseCategory": "kategori pengeluaran terbesar (atau '-' jika kosong)",
+  "savingsStatus": "Baik" | "Cukup" | "Perlu Perhatian"
 }
-Jawablah dalam Bahasa Indonesia yang ramah, profesional, dan memotivasi.`;
+Tips harus singkat (max 10 kata). Bahasa Indonesia ramah dan memotivasi.`;
 
-    const userPrompt = `Berikut adalah data user untuk dianalisis:
-
-DATA AUDIT PRODUKTIVITAS (3 minggu terakhir):
+    const userPrompt = `DATA AUDIT PRODUKTIVITAS (3 minggu terakhir):
 ${hasAudits ? JSON.stringify(audits, null, 2) : "Belum ada data audit produktivitas."}
 
 DATA FINANSIAL (transaksi terakhir):
 ${hasFinances ? JSON.stringify(finances, null, 2) : "Belum ada data transaksi finansial."}
 
-Catatan penting: Jika data produktivitas atau finansial kosong, buatlah observasi umum dan berikan motivasi yang bersahabat agar user segera mulai mengisi data mereka.`;
+Jika data kosong, buat insight motivasi umum dengan score default 50.`;
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
@@ -157,10 +159,16 @@ Catatan penting: Jika data produktivitas atau finansial kosong, buatlah observas
       return { 
         success: true, 
         insight: {
+          weeklyHighlight: parsed.weeklyHighlight || "Analisis mingguan telah selesai.",
+          productivityScore: Number(parsed.productivityScore) || 50,
           productivityObservation: parsed.productivityObservation || "Belum ada observasi produktivitas.",
-          productivitySuggestion: parsed.productivitySuggestion || "Mulai isi audit mingguan Anda untuk mendapatkan saran.",
+          productivityTips: Array.isArray(parsed.productivityTips) ? parsed.productivityTips : ["Mulai isi audit mingguan Anda."],
+          topProductiveActivity: parsed.topProductiveActivity || "-",
+          financialScore: Number(parsed.financialScore) || 50,
           financialObservation: parsed.financialObservation || "Belum ada observasi keuangan.",
-          financialSuggestion: parsed.financialSuggestion || "Mulai catat transaksi keuangan Anda untuk mendapatkan saran."
+          financialTips: Array.isArray(parsed.financialTips) ? parsed.financialTips : ["Mulai catat transaksi keuangan Anda."],
+          biggestExpenseCategory: parsed.biggestExpenseCategory || "-",
+          savingsStatus: parsed.savingsStatus || "Cukup",
         } 
       };
     } catch (parseError) {
