@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { weeklyAuditSchema, WeeklyAuditFormValues } from "@/lib/validations/audit";
-import { submitWeeklyAudit } from "@/app/(dashboard)/audit/actions";
+import { submitWeeklyAudit, classifyCategoryWithAI } from "@/app/(dashboard)/audit/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,7 +43,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
       week_end_date: "",
       summary: "",
       activities: [
-        { category_id: "", duration: 0, productivity_type: "produktif", description: "" },
+        { category_id: "", custom_category: "", duration: 0, productivity_type: "produktif", description: "" },
       ],
     },
   });
@@ -69,7 +69,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
         week_end_date: "",
         summary: "",
         activities: [
-          { category_id: "", duration: 0, productivity_type: "produktif", description: "" },
+          { category_id: "", custom_category: "", duration: 0, productivity_type: "produktif", description: "" },
         ],
       });
       router.push("/dashboard");
@@ -137,7 +137,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => append({ category_id: "", duration: 0, productivity_type: "produktif", description: "" })}
+                    onClick={() => append({ category_id: "", custom_category: "", duration: 0, productivity_type: "produktif", description: "" })}
                     className="rounded-xl border-white/10 hover:bg-white/5 h-9 text-xs"
                   >
                     <Plus className="h-4 w-4 mr-1.5" />
@@ -165,16 +165,49 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                         <select
                           className="flex h-11 w-full rounded-xl border border-white/10 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/50"
                           {...form.register(`activities.${index}.category_id` as const)}
+                          onChange={(e) => {
+                            form.register(`activities.${index}.category_id`).onChange(e);
+                            const val = e.target.value;
+                            if (val && val !== "lain-lain") {
+                              const cat = activeCategories.find(c => c.category_id === val);
+                              if (cat) {
+                                form.setValue(`activities.${index}.productivity_type`, cat.type as any);
+                              }
+                            }
+                          }}
                         >
                           <option value="" className="bg-card">Pilih Kategori...</option>
                           {activeCategories.map((c) => (
                             <option key={c.category_id} value={c.category_id} className="bg-card">{c.category_name}</option>
                           ))}
+                          <option value="lain-lain" className="bg-card italic">Lain-lain (Isi Sendiri)</option>
                         </select>
                         {form.formState.errors.activities?.[index]?.category_id && (
                           <p className="text-xs text-destructive">{form.formState.errors.activities[index]?.category_id?.message}</p>
                         )}
                       </div>
+
+                      {form.watch(`activities.${index}.category_id`) === "lain-lain" && (
+                        <div className="space-y-2 col-span-1 md:col-span-3">
+                          <Label className="text-xs text-muted-foreground font-medium flex items-center gap-2">
+                            Kategori Custom
+                            {isSubmitting && <Loader2 className="h-3 w-3 animate-spin text-primary" />}
+                          </Label>
+                          <Input 
+                            placeholder="Ketik kategori Anda..." 
+                            {...form.register(`activities.${index}.custom_category` as const)}
+                            className="h-11 rounded-xl bg-white/[0.01] border-primary/30 focus:border-primary text-sm"
+                            onBlur={async (e) => {
+                              form.register(`activities.${index}.custom_category`).onBlur(e);
+                              const val = e.target.value;
+                              if (val.trim().length > 2) {
+                                const result = await classifyCategoryWithAI(val);
+                                form.setValue(`activities.${index}.productivity_type`, result.type as any);
+                              }
+                            }}
+                          />
+                        </div>
+                      )}
 
                       <div className="space-y-2">
                         <Label className="text-xs text-muted-foreground font-medium">Durasi (Menit)</Label>
@@ -187,11 +220,12 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                       <div className="space-y-2">
                         <Label className="text-xs text-muted-foreground font-medium">Sifat Aktivitas</Label>
                         <select
-                          className="flex h-11 w-full rounded-xl border border-white/10 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/50"
+                          className="flex h-11 w-full rounded-xl border border-white/10 bg-background/50 px-3 py-2 text-sm text-muted-foreground pointer-events-none opacity-80"
                           {...form.register(`activities.${index}.productivity_type` as const)}
+                          tabIndex={-1}
                         >
-                          <option value="produktif" className="bg-card">Produktif</option>
-                          <option value="non-produktif" className="bg-card">Non-Produktif</option>
+                          <option value="produktif" className="bg-card">Produktif (Otomatis)</option>
+                          <option value="non-produktif" className="bg-card">Non-Produktif (Otomatis)</option>
                         </select>
                         {form.formState.errors.activities?.[index]?.productivity_type && (
                           <p className="text-xs text-destructive">{form.formState.errors.activities[index]?.productivity_type?.message}</p>

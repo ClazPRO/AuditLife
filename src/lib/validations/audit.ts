@@ -2,6 +2,7 @@ import * as z from "zod";
 
 export const activitySchema = z.object({
   category_id: z.string().min(1, { message: "Kategori wajib dipilih" }),
+  custom_category: z.string().optional(),
   duration: z.coerce.number().min(1, { message: "Durasi minimal 1 menit" }).max(10080, { message: "Durasi tidak valid (maks 1 minggu)" }),
   productivity_type: z.enum(["produktif", "non-produktif"], {
     message: "Pilih jenis produktivitas",

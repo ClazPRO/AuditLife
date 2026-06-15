@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { WeeklyAuditFormValues } from "@/lib/validations/audit";
 import { ensurePublicUser } from "@/lib/ensure-user";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
   // Pastikan user ada di public.users (auto-create jika belum)
@@ -42,10 +43,12 @@ export async function submitWeeklyAudit(data: WeeklyAuditFormValues) {
     const activitiesToInsert = data.activities.map((act) => ({
       audit_id: auditId,
       // Jika category_id menggunakan fallback ("1", "2"), set null agar tidak error UUID/FK constraint
-      category_id: act.category_id && act.category_id.length > 10 ? act.category_id : null,
+      category_id: act.category_id && act.category_id.length > 10 && act.category_id !== "lain-lain" ? act.category_id : null,
       duration: act.duration,
       productivity_type: act.productivity_type,
-      description: act.description,
+      description: act.category_id === "lain-lain" && act.custom_category 
+        ? `[Kategori: ${act.custom_category}] ${act.description}` 
+        : act.description,
     }));
 
     const { error: activitiesError } = await supabase
@@ -101,5 +104,33 @@ export async function getWeeklyAudits() {
   } catch (err) {
     console.error("Unexpected error:", err);
     return { error: "Terjadi kesalahan sistem", records: [] };
+  }
+}
+
+export async function classifyCategoryWithAI(categoryName: string) {
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      console.warn("GEMINI_API_KEY not found. Defaulting to produktif.");
+      return { type: "produktif" };
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `Anda adalah asisten klasifikasi produktivitas. 
+Tentukan apakah aktivitas/kategori berikut bersifat "produktif" atau "non-produktif".
+Jawab HANYA dengan satu kata: "produktif" atau "non-produktif".
+Aktivitas: "${categoryName}"`;
+
+    const result = await model.generateContent(prompt);
+    const text = result.response.text().trim().toLowerCase();
+
+    if (text.includes("non")) {
+      return { type: "non-produktif" };
+    }
+    return { type: "produktif" };
+  } catch (error) {
+    console.error("AI Classification Error:", error);
+    return { type: "produktif" }; // fallback
   }
 }
