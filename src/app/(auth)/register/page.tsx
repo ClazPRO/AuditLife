@@ -53,7 +53,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen relative overflow-hidden py-8">
+    <div className="flex items-center justify-center min-h-full flex-1 relative py-8 px-4">
       {/* Background */}
       <div className="fixed inset-0 gradient-bg -z-10" />
       <div className="fixed inset-0 grid-pattern -z-10" />

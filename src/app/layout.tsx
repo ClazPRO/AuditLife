@@ -44,7 +44,7 @@ export default function RootLayout({
           </div>
 
           {/* Children container */}
-          <div className="flex-1 relative flex flex-col overflow-hidden min-h-0">
+          <div className="flex-1 relative flex flex-col overflow-y-auto overflow-x-hidden min-h-0">
             {children}
           </div>
         </div>
