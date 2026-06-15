@@ -127,11 +127,11 @@ export default function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="fade-up fade-up-delay-2 flex flex-col sm:flex-row gap-3 w-full max-w-sm">
-            <Button asChild size="lg" className="h-11 md:h-12 flex-1 glow-primary-hover text-sm rounded-xl font-bold shadow-[0_0_30px_rgba(249,115,22,0.25)]">
+          <div className="fade-up fade-up-delay-2 flex flex-row gap-3 w-full max-w-sm">
+            <Button asChild size="lg" className="h-11 md:h-12 flex-1 glow-primary-hover text-sm rounded-xl font-bold shadow-[0_0_30px_rgba(249,115,22,0.25)] whitespace-nowrap">
               <Link href="/register">
                 Mulai Sekarang
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-1.5 h-4 w-4" />
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="h-11 md:h-12 flex-1 border-white/10 bg-white/[0.02] hover:bg-white/[0.08] backdrop-blur-sm text-sm rounded-xl font-medium">
