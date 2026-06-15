@@ -83,6 +83,9 @@ export default function InsightPage() {
   const [insight, setInsight] = useState<InsightData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
+  const [showLedger, setShowLedger] = useState(false);
+  const [ledgerData, setLedgerData] = useState<any[]>([]);
+  const [loadingLedger, setLoadingLedger] = useState(false);
 
   const loadingTexts = [
     "Mengambil data audit produktivitas...",
@@ -154,6 +157,24 @@ export default function InsightPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleToggleLedger = async () => {
+    if (!showLedger && ledgerData.length === 0) {
+      setLoadingLedger(true);
+      try {
+        const { getFinancialRecords } = await import('../financial/actions');
+        const res = await getFinancialRecords();
+        if (res.records) {
+          setLedgerData(res.records);
+        }
+      } catch (err) {
+        toast({ title: "Gagal", description: "Gagal memuat laporan keuangan", variant: "destructive" });
+      } finally {
+        setLoadingLedger(false);
+      }
+    }
+    setShowLedger(!showLedger);
   };
 
   if (hasApiKey === null) {
@@ -316,6 +337,63 @@ export default function InsightPage() {
                 Pengeluaran terbesar: <span className="font-semibold text-foreground">{insight.biggestExpenseCategory}</span>
               </div>
             </div>
+          </div>
+
+          {/* Collapsible Ledger */}
+          <div className="pt-2 pb-4">
+            <Button 
+              variant="outline" 
+              className="w-full h-11 rounded-2xl border-white/10 bg-white/[0.02] hover:bg-white/[0.05] text-xs font-semibold gap-2 transition-all"
+              onClick={handleToggleLedger}
+            >
+              <Wallet className="h-4 w-4" />
+              {showLedger ? "Tutup Laporan Keuangan" : "Lihat Laporan Keuangan Lengkap"}
+              {loadingLedger && <Loader2 className="h-3 w-3 animate-spin ml-1" />}
+            </Button>
+            
+            {showLedger && (
+              <div className="mt-4 rounded-2xl border border-white/10 bg-black/40 overflow-hidden animate-in slide-in-from-top-4 fade-in duration-300">
+                <div className="p-4 border-b border-white/5 bg-white/[0.02]">
+                  <h3 className="text-sm font-bold flex items-center gap-2">
+                    <Wallet className="h-4 w-4 text-emerald-400" />
+                    Buku Besar Akuntansi
+                  </h3>
+                  <p className="text-[10px] text-muted-foreground mt-1">Riwayat transaksi lengkap sesuai standar akuntansi dasar.</p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-white/[0.02] text-[10px] uppercase text-muted-foreground border-b border-white/5">
+                      <tr>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">Tanggal</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">Kategori</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">Keterangan</th>
+                        <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Debit (Masuk)</th>
+                        <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Kredit (Keluar)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {ledgerData.length > 0 ? ledgerData.map((record, i) => (
+                        <tr key={i} className="hover:bg-white/[0.01]">
+                          <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{new Date(record.date).toLocaleDateString("id-ID", { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                          <td className="px-4 py-3 whitespace-nowrap">{record.category}</td>
+                          <td className="px-4 py-3 text-muted-foreground max-w-[120px] truncate">{record.description || "-"}</td>
+                          <td className="px-4 py-3 text-right text-emerald-400 font-mono">
+                            {record.type === "income" ? `Rp ${record.amount.toLocaleString("id-ID")}` : "-"}
+                          </td>
+                          <td className="px-4 py-3 text-right text-red-400 font-mono">
+                            {record.type === "expense" ? `Rp ${record.amount.toLocaleString("id-ID")}` : "-"}
+                          </td>
+                        </tr>
+                      )) : (
+                        <tr>
+                          <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">Belum ada catatan keuangan.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : (
