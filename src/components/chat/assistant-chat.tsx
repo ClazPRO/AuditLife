@@ -133,7 +133,7 @@ export function AssistantChat({ userName }: { userName: string }) {
       </header>
 
       {/* Main chat area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-0">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-0 pb-32">
         {messages.length === 0 ? (
           /* Welcome state - Gemini Style */
           <div className="flex flex-col items-start w-full py-10 space-y-12 animate-in fade-in duration-500 px-2 sm:px-8 max-w-4xl mx-auto">
@@ -214,8 +214,8 @@ export function AssistantChat({ userName }: { userName: string }) {
       </div>
 
       {/* Input area - Gemini Style Floating Pill */}
-      <div className="shrink-0 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] md:pb-6 px-4 pt-4 bg-gradient-to-t from-background via-background/90 to-transparent relative z-20">
-        <form onSubmit={handleSubmit} className="flex items-center gap-2 max-w-4xl mx-auto bg-white/[0.05] border border-white/10 rounded-full pl-6 pr-2 py-2 shadow-2xl focus-within:bg-white/[0.08] focus-within:border-white/20 transition-all backdrop-blur-md">
+      <div className="fixed bottom-[4.5rem] md:bottom-6 left-0 right-0 px-4 pt-8 pb-2 bg-gradient-to-t from-background via-background/90 to-transparent z-40 pointer-events-none">
+        <form onSubmit={handleSubmit} className="pointer-events-auto flex items-center gap-2 max-w-4xl mx-auto bg-white/[0.05] border border-white/10 rounded-full pl-6 pr-2 py-2 shadow-2xl focus-within:bg-white/[0.08] focus-within:border-white/20 transition-all backdrop-blur-md">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
