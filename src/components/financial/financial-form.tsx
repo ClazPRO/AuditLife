@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FinancialFormValues, financialFormSchema } from "@/lib/validations/financial";
@@ -38,6 +38,17 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
 
   const selectedType = form.watch("type");
   const isIncome = selectedType === "income";
+
+  // Auto-fill and manage category when income is selected
+  // because user requested to not have category for income
+  useEffect(() => {
+    if (isIncome) {
+      form.setValue("category", "Pemasukan");
+      form.clearErrors("category");
+    } else if (form.getValues("category") === "Pemasukan") {
+      form.setValue("category", "");
+    }
+  }, [isIncome, form]);
 
   async function onSubmit(data: FinancialFormValues) {
     setIsLoading(true);
@@ -158,42 +169,44 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori (Misal: Makanan, Bayarin Ipan)"}
-                    </FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder={isIncome ? "Sumber pemasukan" : "Ketik pengeluaran / piutang..."} 
-                        className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl"
-                        {...field} 
-                        onBlur={async (e) => {
-                          field.onBlur();
-                          const val = e.target.value;
-                          if (val.trim().length > 2) {
-                            setIsAILoading(true);
-                            try {
-                              const result = await classifyFinancialWithAI(val);
-                              if (result && result.type) {
-                                form.setValue("type", result.type as any);
+              <div className={isIncome ? "hidden" : "block"}>
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Kategori (Misal: Makanan, Bayarin Ipan)
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Ketik pengeluaran / piutang..." 
+                          className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl"
+                          {...field} 
+                          onBlur={async (e) => {
+                            field.onBlur();
+                            const val = e.target.value;
+                            if (val.trim().length > 2) {
+                              setIsAILoading(true);
+                              try {
+                                const result = await classifyFinancialWithAI(val);
+                                if (result && result.type) {
+                                  form.setValue("type", result.type as any);
+                                }
+                              } catch (err) {
+                                console.error(err);
+                              } finally {
+                                setIsAILoading(false);
                               }
-                            } catch (err) {
-                              console.error(err);
-                            } finally {
-                              setIsAILoading(false);
                             }
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
