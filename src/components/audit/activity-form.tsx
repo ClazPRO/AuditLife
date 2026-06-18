@@ -55,23 +55,26 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
   async function onSubmit(data: WeeklyAuditFormValues) {
     setIsSubmitting(true);
     setError(null);
-
-    const result = await submitWeeklyAudit(data);
-
-    if (result.error) {
-      setError(result.error);
+    try {
+      const result = await submitWeeklyAudit(data);
+      if (result.error) {
+        setError(result.error);
+        setIsSubmitting(false);
+      } else {
+        setIsOpen(false);
+        form.reset({
+          week_start_date: "",
+          week_end_date: "",
+          summary: "",
+          activities: [
+            { category_id: "", custom_category: "", duration: 0, productivity_type: "produktif", description: "" },
+          ],
+        });
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      setError("Terjadi kesalahan saat menyimpan data.");
       setIsSubmitting(false);
-    } else {
-      setIsOpen(false);
-      form.reset({
-        week_start_date: "",
-        week_end_date: "",
-        summary: "",
-        activities: [
-          { category_id: "", custom_category: "", duration: 0, productivity_type: "produktif", description: "" },
-        ],
-      });
-      router.push("/dashboard");
     }
   }
 
@@ -200,8 +203,14 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                               form.register(`activities.${index}.custom_category`).onBlur(e);
                               const val = e.target.value;
                               if (val.trim().length > 2) {
-                                const result = await classifyCategoryWithAI(val);
-                                form.setValue(`activities.${index}.productivity_type`, result.type as "produktif" | "non-produktif");
+                                try {
+                                  const result = await classifyCategoryWithAI(val);
+                                  if (result && result.type) {
+                                    form.setValue(`activities.${index}.productivity_type`, result.type as "produktif" | "non-produktif");
+                                  }
+                                } catch (err) {
+                                  // ignore error or handle it
+                                }
                               }
                             }}
                           />
