@@ -25,8 +25,7 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
   const { toast } = useToast();
 
   const form = useForm<FinancialFormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(financialFormSchema) as any,
+    resolver: zodResolver(financialFormSchema),
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
       category: "",
