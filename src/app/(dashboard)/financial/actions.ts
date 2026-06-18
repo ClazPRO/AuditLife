@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { FinancialFormValues } from "@/lib/validations/financial";
 import { ensurePublicUser } from "@/lib/ensure-user";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function getFinancialRecords() {
   const user = await ensurePublicUser();
@@ -95,5 +96,37 @@ export async function deleteFinancialRecord(recordId: string) {
   } catch (err) {
     console.error("Unexpected error:", err);
     return { error: "Terjadi kesalahan sistem" };
+  }
+}
+
+export async function classifyFinancialWithAI(text: string) {
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      console.warn("GEMINI_API_KEY not found. Defaulting to need.");
+      return { type: "need" };
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `Anda adalah asisten klasifikasi keuangan cerdas.
+Tentukan apakah transaksi/kategori berikut termasuk: "income" (pemasukan), "need" (kebutuhan wajib), "want" (keinginan/tersier), "investment" (investasi/tabungan), "receivable" (piutang/uang dipinjamkan/bayarin orang), atau "debt" (utang/minjam uang).
+Jawab HANYA dengan satu kata dari tipe yang valid: "income", "need", "want", "investment", "receivable", atau "debt".
+Transaksi: "${text}"`;
+
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text().trim().toLowerCase();
+
+    if (responseText.includes("income")) return { type: "income" };
+    if (responseText.includes("want")) return { type: "want" };
+    if (responseText.includes("investment")) return { type: "investment" };
+    if (responseText.includes("receivable") || responseText.includes("piutang")) return { type: "receivable" };
+    if (responseText.includes("debt") || responseText.includes("utang")) return { type: "debt" };
+    
+    // Default fallback to need if unclear
+    return { type: "need" };
+  } catch (error) {
+    console.error("AI Financial Classification Error:", error);
+    return { type: "need" }; // fallback
   }
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FinancialFormValues, financialFormSchema } from "@/lib/validations/financial";
-import { addFinancialRecord } from "@/app/(dashboard)/financial/actions";
+import { addFinancialRecord, classifyFinancialWithAI } from "@/app/(dashboard)/financial/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,6 +22,7 @@ import { Plus, X, Loader2 } from "lucide-react";
 export function FinancialForm({ defaultType }: { defaultType?: "income" | "need" | "want" | "investment" }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAILoading, setIsAILoading] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<FinancialFormValues>({
@@ -135,7 +136,10 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                 name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tipe</FormLabel>
+                    <FormLabel className="flex items-center gap-2">
+                      Tipe
+                      {isAILoading && <Loader2 className="h-3 w-3 animate-spin text-primary" />}
+                    </FormLabel>
                     <FormControl>
                       <select 
                         className="flex h-11 w-full rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -146,23 +150,45 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                         <option value="need" className="bg-card">Need (Kebutuhan)</option>
                         <option value="want" className="bg-card">Want (Keinginan)</option>
                         <option value="investment" className="bg-card">Investment (Investasi)</option>
+                        <option value="receivable" className="text-amber-500 font-medium bg-card">Receivable (Piutang/Bayarin Teman)</option>
+                        <option value="debt" className="text-rose-500 font-medium bg-card">Debt (Utang/Pinjam Uang)</option>
                       </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori Pengeluaran (Misal: Makanan, Transportasi)"}
+                      {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori (Misal: Makanan, Bayarin Ipan)"}
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder={isIncome ? "Sumber pemasukan" : "Kategori pengeluaran"} {...field} className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl" />
+                      <Input 
+                        placeholder={isIncome ? "Sumber pemasukan" : "Ketik pengeluaran / piutang..."} 
+                        className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl"
+                        {...field} 
+                        onBlur={async (e) => {
+                          field.onBlur();
+                          const val = e.target.value;
+                          if (val.trim().length > 2) {
+                            setIsAILoading(true);
+                            try {
+                              const result = await classifyFinancialWithAI(val);
+                              if (result && result.type) {
+                                form.setValue("type", result.type as any);
+                              }
+                            } catch (err) {
+                              console.error(err);
+                            } finally {
+                              setIsAILoading(false);
+                            }
+                          }
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
