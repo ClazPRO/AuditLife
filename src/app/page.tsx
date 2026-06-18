@@ -23,13 +23,13 @@ export default function Home() {
           key={`particle-${i}`} 
           className="absolute rounded-full bg-primary/70 blur-[1px]"
           style={{
-            width: `${Math.random() * 8 + 4}px`,
-            height: `${Math.random() * 8 + 4}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            width: `${((i * 7) % 8) + 4}px`,
+            height: `${((i * 7) % 8) + 4}px`,
+            left: `${(i * 13) % 100}%`,
+            top: `${(i * 17) % 100}%`,
             zIndex: 3,
-            animation: `orbFloat${(i % 3) + 1} ${Math.random() * 8 + 10}s ease-in-out infinite alternate`,
-            animationDelay: `${Math.random() * 3}s`
+            animation: `orbFloat${(i % 3) + 1} ${((i * 5) % 8) + 10}s ease-in-out infinite alternate`,
+            animationDelay: `${(i * 3) % 3}s`
           }}
         />
       ))}
