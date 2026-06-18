@@ -25,13 +25,12 @@ export function MobileNav({ userName, userEmail }: MobileNavProps) {
   // Prevent scroll when open
   useEffect(() => {
     if (open) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
     }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
   }, [open]);
 
   return (
@@ -41,6 +40,7 @@ export function MobileNav({ userName, userEmail }: MobileNavProps) {
         size="icon"
         className="mr-2 h-9 w-9"
         onClick={() => setOpen(true)}
+        aria-label="Buka Menu"
       >
         <Menu className="h-5 w-5" />
         <span className="sr-only">Toggle Menu</span>
@@ -51,6 +51,7 @@ export function MobileNav({ userName, userEmail }: MobileNavProps) {
         <div 
           className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100"
           onClick={() => setOpen(false)}
+          aria-hidden="true"
         />
       )}
 
@@ -60,16 +61,17 @@ export function MobileNav({ userName, userEmail }: MobileNavProps) {
           "fixed inset-y-0 left-0 z-50 w-3/4 max-w-sm flex-col bg-background/95 backdrop-blur-xl border-r border-white/10 shadow-2xl transition-transform duration-300 ease-in-out sm:hidden",
           open ? "translate-x-0" : "-translate-x-full"
         )}
+        aria-hidden={!open}
       >
         {/* Logo */}
         <div className="flex h-14 items-center justify-between border-b border-white/5 px-4">
           <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
             <div className="h-8 w-8 relative rounded-lg overflow-hidden border border-primary/20 shadow-[0_0_10px_rgba(249,115,22,0.15)]">
-              <img src="/logo.png" alt="AuditLife Logo" className="object-cover w-full h-full" />
+              <img src="/logo.png" alt="AuditLife Logo" width={32} height={32} className="object-cover w-full h-full" />
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">AuditLife</span>
           </Link>
-          <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-8 w-8">
+          <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-8 w-8" aria-label="Tutup Menu">
             <X className="h-5 w-5" />
           </Button>
         </div>
