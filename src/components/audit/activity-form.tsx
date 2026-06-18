@@ -166,17 +166,17 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                         <Label className="text-xs text-muted-foreground font-medium">Kategori</Label>
                         <select
                           className="flex h-11 w-full rounded-xl border border-white/10 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:border-primary/50"
-                          {...form.register(`activities.${index}.category_id` as const)}
-                          onChange={(e) => {
-                            form.register(`activities.${index}.category_id`).onChange(e);
-                            const val = e.target.value;
-                            if (val && val !== "lain-lain") {
-                              const cat = activeCategories.find(c => c.category_id === val);
-                              if (cat) {
-                                form.setValue(`activities.${index}.productivity_type`, cat.type as "produktif" | "non-produktif");
+                          {...form.register(`activities.${index}.category_id` as const, {
+                            onChange: (e) => {
+                              const val = e.target.value;
+                              if (val && val !== "lain-lain") {
+                                const cat = activeCategories.find(c => c.category_id === val);
+                                if (cat) {
+                                  form.setValue(`activities.${index}.productivity_type`, cat.type as "produktif" | "non-produktif");
+                                }
                               }
                             }
-                          }}
+                          })}
                         >
                           <option value="" className="bg-card">Pilih Kategori...</option>
                           {activeCategories.map((c) => (
@@ -197,22 +197,22 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                           </Label>
                           <Input 
                             placeholder="Ketik kategori Anda..." 
-                            {...form.register(`activities.${index}.custom_category` as const)}
                             className="h-11 rounded-xl bg-white/[0.01] border-primary/30 focus:border-primary text-sm"
-                            onBlur={async (e) => {
-                              form.register(`activities.${index}.custom_category`).onBlur(e);
-                              const val = e.target.value;
-                              if (val.trim().length > 2) {
-                                try {
-                                  const result = await classifyCategoryWithAI(val);
-                                  if (result && result.type) {
-                                    form.setValue(`activities.${index}.productivity_type`, result.type as "produktif" | "non-produktif");
+                            {...form.register(`activities.${index}.custom_category` as const, {
+                              onBlur: async (e) => {
+                                const val = e.target.value;
+                                if (val.trim().length > 2) {
+                                  try {
+                                    const result = await classifyCategoryWithAI(val);
+                                    if (result && result.type) {
+                                      form.setValue(`activities.${index}.productivity_type`, result.type as "produktif" | "non-produktif");
+                                    }
+                                  } catch (err) {
+                                    console.error("Gagal mengklasifikasikan kategori:", err);
                                   }
-                                } catch (err) {
-                                  // ignore error or handle it
                                 }
                               }
-                            }}
+                            })}
                           />
                         </div>
                       )}
