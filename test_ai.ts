@@ -7,9 +7,13 @@ async function main() {
       model: google("gemini-2.5-flash"),
       prompt: "Hello",
     });
-    console.log("Success:", text);
-  } catch (error: any) {
-    console.error("Error calling gemini:", error?.message || error);
+    console.log("Success length:", text.length);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error calling gemini:", error.message);
+    } else {
+      console.error("Unknown error occurred");
+    }
   }
 }
 

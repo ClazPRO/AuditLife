@@ -1,19 +1,32 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://sdwvnbkcwauixdfhoxkf.supabase.co';
-const supabaseKey = 'sb_publishable_xhlylps_HBj1pbev1ivB4w_kglz18uJ';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.warn('Missing Supabase credentials');
+  process.exit(0);
+}
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function test() {
   try {
+    const email = process.env.TEST_EMAIL;
+    const password = process.env.TEST_PASSWORD;
+    
+    if (!email || !password) {
+      console.warn('Missing test credentials');
+      return;
+    }
+    
     const res = await supabase.auth.signUp({
-      email: 'test@example.com',
-      password: 'password123',
+      email,
+      password,
     });
-    console.log('Result:', res);
+    console.log('Result keys:', Object.keys(res).length);
   } catch (err) {
-    console.error('ERROR:', err.message || err);
+    console.error('ERROR:', err instanceof Error ? err.message : String(err));
   }
 }
 
