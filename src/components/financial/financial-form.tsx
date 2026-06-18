@@ -160,16 +160,16 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori (Misal: Makanan, Bayarin Ipan)"}
-                    </FormLabel>
-                    <FormControl>
-                      <Input 
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        {isIncome ? "Sumber Pemasukan (Misal: Gaji, Freelance)" : "Kategori (Misal: Makanan, Transportasi)"}
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
                         placeholder={isIncome ? "Sumber pemasukan..." : "Ketik pengeluaran / piutang..."} 
                         className="h-11 bg-white/[0.02] border-white/10 focus:border-primary/50 text-sm rounded-xl"
                         {...field} 
