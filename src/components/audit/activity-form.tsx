@@ -98,6 +98,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
         <div 
           className="fixed inset-0 -z-10" 
           onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
         <div className="bg-background border-t border-white/10 xl:border border-white/5 rounded-t-3xl xl:rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in slide-in-from-bottom xl:slide-in-from-bottom-0 xl:zoom-in-95 duration-300 pb-10 xl:pb-0">
           {/* Handle bar on mobile */}
