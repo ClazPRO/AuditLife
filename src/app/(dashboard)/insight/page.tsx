@@ -389,7 +389,7 @@ export default function InsightPage() {
                             {record.type === "income" ? `Rp ${record.amount.toLocaleString("id-ID")}` : "-"}
                           </td>
                           <td className="px-4 py-3 text-right text-red-400 font-mono">
-                            {record.type === "expense" ? `Rp ${record.amount.toLocaleString("id-ID")}` : "-"}
+                            {record.type !== "income" ? `Rp ${record.amount.toLocaleString("id-ID")}` : "-"}
                           </td>
                         </tr>
                       )) : (
