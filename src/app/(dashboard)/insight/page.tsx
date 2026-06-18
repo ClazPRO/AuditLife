@@ -21,6 +21,14 @@ interface InsightData {
   generatedAt: string;
 }
 
+interface LedgerRecord {
+  date: string;
+  category: string;
+  description?: string;
+  type: string;
+  amount: number;
+}
+
 // Circular Score Component
 function ScoreRing({ score, color }: { score: number; color: "violet" | "emerald" }) {
   const radius = 36;
@@ -61,7 +69,7 @@ function ScoreRing({ score, color }: { score: number; color: "violet" | "emerald
 
 // Status Badge
 function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { icon: any; color: string; bg: string }> = {
+  const map: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
     "Baik": { icon: ShieldCheck, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
     "Cukup": { icon: Star, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
     "Perlu Perhatian": { icon: AlertTriangle, color: "text-red-400", bg: "bg-red-500/10 border-red-500/20" },
@@ -84,7 +92,7 @@ export default function InsightPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
   const [showLedger, setShowLedger] = useState(false);
-  const [ledgerData, setLedgerData] = useState<any[]>([]);
+  const [ledgerData, setLedgerData] = useState<LedgerRecord[]>([]);
   const [loadingLedger, setLoadingLedger] = useState(false);
 
   const loadingTexts = [
@@ -115,7 +123,7 @@ export default function InsightPage() {
       setLoadingStep(0);
     }
     return () => clearInterval(interval);
-  }, [isLoading]);
+  }, [isLoading, loadingTexts.length]);
 
   const handleSaveApiKey = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,9 +174,9 @@ export default function InsightPage() {
         const { getFinancialRecords } = await import('../financial/actions');
         const res = await getFinancialRecords();
         if (res.records) {
-          setLedgerData(res.records);
+          setLedgerData(res.records as LedgerRecord[]);
         }
-      } catch (err) {
+      } catch {
         toast({ title: "Gagal", description: "Gagal memuat laporan keuangan", variant: "destructive" });
       } finally {
         setLoadingLedger(false);

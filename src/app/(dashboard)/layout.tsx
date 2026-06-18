@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { logout } from "../(auth)/actions";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { CursorLoader } from "@/components/layout/cursor-loader";
-import { LogOut, Sparkles } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 export default async function DashboardLayout({
   children,

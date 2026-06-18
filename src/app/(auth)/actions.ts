@@ -60,9 +60,9 @@ export async function logout() {
 
 export async function loginAsGuest(formData: FormData) {
   const nickname = formData.get("nickname") as string || "Anonymous";
-  const randomSuffix = Math.random().toString(36).substring(2, 10);
+  const randomSuffix = crypto.randomUUID().split('-')[0];
   const dummyEmail = `${nickname.replace(/\s+/g, '').toLowerCase()}_${randomSuffix}@guest.auditlife.app`;
-  const dummyPassword = `Guest!${Math.random().toString(36).substring(2, 15)}#`;
+  const dummyPassword = `Guest!${crypto.randomUUID()}#`;
 
   const supabase = createClient();
   

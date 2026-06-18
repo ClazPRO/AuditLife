@@ -24,15 +24,15 @@ Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia ya
     });
 
     // Convert messages to Gemini chat history format
-    const history = messages.slice(0, -1).map((m: any) => ({
+    const history = messages.slice(0, -1).map((m: { role: string; content: string; parts?: { text: string }[] }) => ({
       role: m.role === "user" ? "user" : "model",
-      parts: [{ text: typeof m.content === "string" ? m.content : (m.parts?.map((p: any) => p.text).join("") ?? "") }],
+      parts: [{ text: typeof m.content === "string" ? m.content : (m.parts?.map((p: { text: string }) => p.text).join("") ?? "") }],
     }));
 
     const lastMessage = messages[messages.length - 1];
     const lastContent = typeof lastMessage.content === "string"
       ? lastMessage.content
-      : (lastMessage.parts?.map((p: any) => p.text).join("") ?? "");
+      : (lastMessage.parts?.map((p: { text: string }) => p.text).join("") ?? "");
 
     const chat = model.startChat({ history });
     const result = await chat.sendMessageStream(lastContent);
@@ -49,8 +49,8 @@ Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia ya
             }
           }
           controller.close();
-        } catch (err: any) {
-          console.error("Stream error:", err?.message);
+        } catch (err: unknown) {
+          console.error("Stream error:", err instanceof Error ? err.message : String(err));
           controller.close();
         }
       },
@@ -63,10 +63,10 @@ Berikan jawaban yang ringkas, suportif, dan solutif. Gunakan bahasa Indonesia ya
         "X-Content-Type-Options": "nosniff",
       },
     });
-  } catch (error: any) {
-    console.error("AI Chat error:", error?.message);
+  } catch (error: unknown) {
+    console.error("AI Chat error:", error instanceof Error ? error.message : String(error));
     return new Response(
-      JSON.stringify({ error: "Terjadi kesalahan: " + error?.message }),
+      JSON.stringify({ error: "Terjadi kesalahan: " + (error instanceof Error ? error.message : String(error)) }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }

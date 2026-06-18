@@ -43,9 +43,9 @@ export async function saveGeminiApiKey(key: string) {
     process.env.GOOGLE_GENERATIVE_AI_API_KEY = trimmedKey;
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Save API Key Error:", error);
-    return { error: `Gagal menyimpan API Key: ${error.message || "Kesalahan sistem"}` };
+    return { error: `Gagal menyimpan API Key: ${error instanceof Error ? error.message : "Kesalahan sistem"}` };
   }
 }
 

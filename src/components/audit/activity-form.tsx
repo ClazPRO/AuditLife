@@ -171,7 +171,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                             if (val && val !== "lain-lain") {
                               const cat = activeCategories.find(c => c.category_id === val);
                               if (cat) {
-                                form.setValue(`activities.${index}.productivity_type`, cat.type as any);
+                                form.setValue(`activities.${index}.productivity_type`, cat.type as "produktif" | "non-produktif");
                               }
                             }
                           }}
@@ -202,7 +202,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
                               const val = e.target.value;
                               if (val.trim().length > 2) {
                                 const result = await classifyCategoryWithAI(val);
-                                form.setValue(`activities.${index}.productivity_type`, result.type as any);
+                                form.setValue(`activities.${index}.productivity_type`, result.type as "produktif" | "non-produktif");
                               }
                             }}
                           />

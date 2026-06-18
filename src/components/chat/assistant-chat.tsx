@@ -85,11 +85,11 @@ export function AssistantChat({ userName }: { userName: string }) {
           )
         );
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError("Gagal memuat balasan. Pastikan API Key Anda sudah diatur.");
       // Remove empty assistant placeholder on error
       setMessages((prev) => prev.filter((m) => m.id !== assistantId));
-      console.error("Chat error:", err?.message);
+      console.error("Chat error:", err instanceof Error ? err.message : String(err));
     } finally {
       setIsLoading(false);
     }
