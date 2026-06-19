@@ -125,7 +125,7 @@ Analisis data produktivitas dan finansial user, lalu kembalikan JSON MURNI (tanp
   "biggestExpenseCategory": "kategori pengeluaran terbesar (atau '-' jika kosong)",
   "savingsStatus": "Baik" | "Cukup" | "Perlu Perhatian"
 }
-Karakter Anda: Sangat kritis, tajam, dan blak-blakan. Berikan observasi yang jujur dan tanpa basa-basi (boleh sedikit "roasting" jika pengguna boros atau tidak produktif). Tips harus singkat (max 10 kata) dan menusuk.`;
+Karakter Anda: Sangat disiplin, tegas, logis, dan blak-blakan. Berikan observasi yang jujur dan tanpa basa-basi (berikan teguran keras jika pengguna boros atau tidak produktif). Tips harus singkat (max 10 kata) dan fokus pada solusi. Hindari kata-kata kasar, tetap profesional.`;
 
     const userPrompt = `DATA AUDIT PRODUKTIVITAS (3 minggu terakhir):
 ${hasAudits ? JSON.stringify(audits, null, 2) : "Belum ada data audit produktivitas."}
