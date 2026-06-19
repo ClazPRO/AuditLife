@@ -12,7 +12,13 @@ interface Message {
 }
 
 export function AssistantChat({ userName }: { userName: string }) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "welcome",
+      role: "assistant",
+      content: `Halo, ${userName}! 👋\nAda yang bisa saya bantu hari ini?`
+    }
+  ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -105,7 +111,13 @@ export function AssistantChat({ userName }: { userName: string }) {
   };
 
   const clearChat = () => {
-    setMessages([]);
+    setMessages([
+      {
+        id: "welcome",
+        role: "assistant",
+        content: `Halo, ${userName}! 👋\nAda yang bisa saya bantu hari ini?`
+      }
+    ]);
     setError(null);
     setInput("");
   };
@@ -119,7 +131,7 @@ export function AssistantChat({ userName }: { userName: string }) {
           AI Assistant
         </h2>
 
-        {messages.length > 0 && (
+        {messages.length > 1 && (
           <Button
             variant="ghost"
             size="sm"
@@ -134,83 +146,69 @@ export function AssistantChat({ userName }: { userName: string }) {
 
       {/* Main chat area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar min-h-0 pb-32">
-        {messages.length === 0 ? (
-          /* Welcome state - Gemini Style */
-          <div className="flex flex-col items-start w-full py-10 space-y-12 animate-in fade-in duration-500 px-2 sm:px-8 max-w-4xl mx-auto">
-            <div className="space-y-1">
-              <h3 className="text-[2.5rem] leading-tight sm:text-6xl font-medium tracking-tight bg-gradient-to-r from-primary via-orange-400 to-violet-500 bg-clip-text text-transparent">
-                Hello, {userName}
-              </h3>
-              <p className="text-3xl sm:text-5xl font-medium text-muted-foreground/40">
-                How can I help you today?
-              </p>
-            </div>
+        {/* Messages */}
+        <div className="space-y-4 max-w-4xl mx-auto w-full">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex gap-3 ${
+                message.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {message.role === "assistant" && (
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/20 border border-white/10">
+                  <Bot className="h-4 w-4 text-primary" />
+                </div>
+              )}
 
-            {/* Suggestions - Horizontal scroll */}
-            <div className="w-full flex gap-3 overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 snap-x">
+              <div
+                className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                  message.role === "user"
+                    ? "bg-primary text-primary-foreground rounded-tr-sm"
+                    : "bg-white/[0.04] border border-white/5 text-foreground rounded-tl-sm"
+                }`}
+              >
+                {message.content === "" && message.role === "assistant" ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+                ) : (
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+                )}
+              </div>
+
+              {message.role === "user" && (
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-violet-600 border border-white/10">
+                  <User className="h-4 w-4 text-white" />
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* Suggestions - show only when just welcome message is present */}
+          {messages.length === 1 && (
+            <div className="flex flex-col gap-2 pt-4 pl-11">
               {suggestions.map((suggestion, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSuggestionClick(suggestion)}
                   disabled={isLoading}
-                  className="flex-shrink-0 snap-start w-[150px] sm:w-[180px] h-[120px] sm:h-[140px] p-4 text-left text-xs sm:text-sm font-medium rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-transparent hover:border-white/10 transition-all duration-300 text-muted-foreground hover:text-foreground flex flex-col justify-between group disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-fit px-4 py-2 text-left text-xs font-medium rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 transition-all duration-300 text-muted-foreground hover:text-foreground flex items-center gap-2"
                 >
-                  <span className="line-clamp-3">{suggestion}</span>
-                  <div className="self-end w-8 h-8 rounded-full bg-background/50 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity">
-                    <Sparkles className="h-3.5 w-3.5 text-primary" />
-                  </div>
+                  <Sparkles className="h-3 w-3 text-primary" />
+                  {suggestion}
                 </button>
               ))}
             </div>
-          </div>
-        ) : (
-          /* Messages */
-          <div className="space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${
-                  message.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {message.role === "assistant" && (
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-violet-600/20 border border-white/10">
-                    <Bot className="h-4 w-4 text-primary" />
-                  </div>
-                )}
+          )}
 
-                <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground rounded-tr-sm"
-                      : "bg-white/[0.04] border border-white/5 text-foreground rounded-tl-sm"
-                  }`}
-                >
-                  {message.content === "" && message.role === "assistant" ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
-                  ) : (
-                    <p className="whitespace-pre-wrap">{message.content}</p>
-                  )}
-                </div>
+          {/* Error message */}
+          {error && (
+            <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs text-red-400">
+              <span>⚠ {error}</span>
+            </div>
+          )}
 
-                {message.role === "user" && (
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-violet-600 border border-white/10">
-                    <User className="h-4 w-4 text-white" />
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* Error message */}
-            {error && (
-              <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs text-red-400">
-                <span>⚠ {error}</span>
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-        )}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
       {/* Input area - Gemini Style Floating Pill */}
