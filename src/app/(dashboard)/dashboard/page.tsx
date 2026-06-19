@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/server";
 import { getWeeklyAudits } from "../audit/actions";
 import { getFinancialRecords } from "../financial/actions";
 import { PrayerTimes } from "@/components/dashboard/prayer-times";
+import { ClientGreeting } from "@/components/dashboard/client-greeting";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -44,9 +45,6 @@ export default async function DashboardPage() {
   }
   const financialStr = hasFinances ? `Rp ${(balance/1000).toFixed(0)}k` : "--";
 
-  // Get current hour for greeting
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Selamat Pagi" : hour < 17 ? "Selamat Siang" : "Selamat Malam";
 
   // Kumpulan Kutipan Islami Harian
   const islamicQuotes = [
@@ -69,7 +67,7 @@ export default async function DashboardPage() {
         <div className="absolute -top-12 -right-12 w-48 h-48 bg-primary/20 rounded-full blur-3xl animate-pulse" />
         <div className="relative flex flex-col gap-4">
           <div>
-            <p className="text-[11px] text-primary font-semibold tracking-wider uppercase mb-1">{greeting} 👋</p>
+            <ClientGreeting />
             <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">{userName}</h2>
             
             <div className="flex items-center gap-2 mt-2.5">
