@@ -93,159 +93,123 @@ export default async function DashboardPage() {
 
       {/* Score Cards */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="neon-card-violet group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+        <Card className="group border-white/10 bg-white/5 backdrop-blur-xl hover:bg-violet-500/10 transition-all duration-500 shadow-lg shadow-violet-500/5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-foreground/80">
               Productivity Score
             </CardTitle>
-            <div className="h-8 w-8 rounded-lg bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+            <div className="h-8 w-8 rounded-lg bg-violet-500/20 flex items-center justify-center border border-violet-500/30 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
               <TrendingUp className="h-4 w-4 text-violet-400" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{hasAudits ? `${productivityScore}/100` : "--"}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {hasAudits ? "Berdasarkan audit terakhir" : "Belum ada data audit"}
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold tracking-tight text-white">{hasAudits ? `${productivityScore}/100` : "--"}</div>
+            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">
+              {hasAudits ? "Berdasarkan audit terakhir" : "Belum ada data"}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="neon-card-blue group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+        <Card className="group border-white/10 bg-white/5 backdrop-blur-xl hover:bg-blue-500/10 transition-all duration-500 shadow-lg shadow-blue-500/5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-foreground/80">
               Time Logged
             </CardTitle>
-            <div className="h-8 w-8 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+            <div className="h-8 w-8 rounded-lg bg-blue-500/20 flex items-center justify-center border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
               <Clock className="h-4 w-4 text-blue-400" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{timeManagement}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {hasAudits ? "Total jam audit terakhir" : "Belum ada data audit"}
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold tracking-tight text-white">{timeManagement}</div>
+            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">
+              {hasAudits ? "Total jam terakhir" : "Belum ada data"}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="neon-card-emerald group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Consistency</CardTitle>
-            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+        <Card className="group border-white/10 bg-white/5 backdrop-blur-xl hover:bg-emerald-500/10 transition-all duration-500 shadow-lg shadow-emerald-500/5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-foreground/80">
+              Consistency
+            </CardTitle>
+            <div className="h-8 w-8 rounded-lg bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
               <Zap className="h-4 w-4 text-emerald-400" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{consistencyStr}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {hasAudits ? "Total minggu tercatat" : "Belum ada data audit"}
+          <CardContent className="relative z-10">
+            <div className="text-2xl font-bold tracking-tight text-white">{consistencyStr}</div>
+            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">
+              {hasAudits ? "Total minggu" : "Belum ada data"}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="neon-card-amber group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+        <Card className="group border-white/10 bg-white/5 backdrop-blur-xl hover:bg-amber-500/10 transition-all duration-500 shadow-lg shadow-amber-500/5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+            <CardTitle className="text-sm font-medium text-foreground/80">
               Balance
             </CardTitle>
-            <div className="h-8 w-8 rounded-lg bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+            <div className="h-8 w-8 rounded-lg bg-amber-500/20 flex items-center justify-center border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
               <TrendingUp className="h-4 w-4 text-amber-400" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${balance < 0 ? "text-red-400" : ""}`}>
+          <CardContent className="relative z-10">
+            <div className={`text-2xl font-bold tracking-tight ${balance < 0 ? "text-red-400" : "text-white"}`}>
               {financialStr}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {hasFinances ? "Sisa saldo tersimpan" : "Belum ada data keuangan"}
+            <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">
+              {hasFinances ? "Sisa saldo tersimpan" : "Belum ada data"}
             </p>
           </CardContent>
         </Card>
       </div>
 
-
       {/* Main Content Grid */}
       <div className="flex flex-col gap-4">
-        <Card className="border-white/5">
+
+
+        <Card className="border-white/10 bg-white/5 backdrop-blur-xl relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-blue-500 to-violet-500" />
           <CardHeader>
-            <CardTitle>Overview Mingguan</CardTitle>
-            <CardDescription>
-              Ringkasan aktivitasmu selama 7 hari terakhir.
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+              <CardTitle className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">AI Insight & Rekomendasi</CardTitle>
+            </div>
+            <CardDescription className="text-foreground/60">
+              Analisis cerdas berdasarkan log aktivitas & keuanganmu
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center min-h-[300px] text-center space-y-4">
-            {latestAudit ? (
-              <div className="w-full space-y-4 text-left p-4">
-                <h3 className="font-semibold text-lg border-b border-white/10 pb-2">Audit Terakhir</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Tanggal</span>
-                    <span>{new Date(latestAudit.week_start_date).toLocaleDateString("id-ID")} - {new Date(latestAudit.week_end_date).toLocaleDateString("id-ID")}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Total Waktu</span>
-                    <span>{Math.floor(latestAudit.total_time / 60)}j {latestAudit.total_time % 60}m</span>
-                  </div>
-                  <div className="flex justify-between border-t border-white/10 pt-2 mt-2">
-                    <span className="text-muted-foreground">Catatan</span>
-                    <span className="text-right max-w-[200px] truncate">{latestAudit.summary || "-"}</span>
-                  </div>
+          <CardContent className="flex flex-col items-center justify-center py-6 space-y-4">
+            {hasAudits ? (
+              <div className="p-6 rounded-2xl border border-primary/20 bg-primary/5 text-center space-y-4 w-full shadow-[inset_0_0_20px_rgba(0,0,0,0.2)]">
+                <div className="mx-auto w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(var(--primary),0.3)]">
+                  <Sparkles className="h-7 w-7 text-primary" />
                 </div>
-                <Button asChild className="w-full mt-4 glow-primary-hover">
-                  <Link href="/audit">Lihat Semua Audit</Link>
+                <p className="text-sm text-foreground/90 px-2 font-medium leading-relaxed italic">
+                  &ldquo;{productivityScore > 50 ? 'Produktivitasmu minggu ini cukup baik! Pertahankan momentum ini agar targetmu cepat tercapai.' : 'Melihat log waktumu, sepertinya minggu ini kamu terlalu santai. Ayo tingkatkan disiplinmu minggu depan!'}&rdquo;
+                </p>
+                <Button className="w-full mt-4 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/50 transition-all duration-300 shadow-[0_0_10px_rgba(var(--primary),0.2)]" asChild>
+                  <Link href="/insight">Minta Roasting Lengkap dari AI</Link>
                 </Button>
               </div>
             ) : (
-              <>
-                <div className="p-5 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl">
-                  <ClipboardList className="h-10 w-10 text-primary" />
+              <div className="p-6 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] text-center space-y-3 w-full">
+                <div className="mx-auto w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
+                  <Sparkles className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-semibold">Mulai Audit Pertamamu</h3>
-                <p className="text-sm text-muted-foreground max-w-sm">
-                  Kamu belum memiliki data audit minggu ini. Mulai catat aktivitasmu
-                  sekarang untuk mendapatkan AI Insight.
+                <p className="text-sm text-muted-foreground px-4">
+                  Submit audit mingguan terlebih dahulu untuk mendapatkan insight tajam dari AuditLife AI.
                 </p>
-                <Button asChild className="mt-4 glow-primary-hover">
+                <Button asChild className="mt-4 w-full bg-white/5 hover:bg-white/10 border border-white/10">
                   <Link href="/audit">
-                    Buat Audit Aktivitas
+                    Mulai Audit Aktivitas
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-              </>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="border-white/5">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <CardTitle>AI Insight & Rekomendasi</CardTitle>
-            </div>
-            <CardDescription>
-              Pola dan saran berdasarkan aktivitasmu
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center min-h-[300px] space-y-4">
-            {hasAudits ? (
-              <div className="p-4 rounded-2xl border border-dashed border-primary/20 bg-primary/5 text-center space-y-3 w-full">
-                <div className="mx-auto w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm text-foreground px-2 font-medium">
-                  &ldquo;{productivityScore > 50 ? 'Produktivitasmu minggu ini cukup baik! Pertahankan momentum ini.' : 'Sepertinya minggu ini kamu butuh fokus lebih untuk meningkatkan produktivitas.'}&rdquo;
-                </p>
-                <Button variant="outline" asChild className="w-full mt-2">
-                  <Link href="/insight">Tanya AI Lebih Lanjut</Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="p-4 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] text-center space-y-3">
-                <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm text-muted-foreground px-4">
-                  Submit audit mingguan terlebih dahulu untuk mendapatkan insight dari AuditLife AI.
-                </p>
               </div>
             )}
           </CardContent>

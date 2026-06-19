@@ -47,7 +47,7 @@ export function ChatWidget() {
         <Button
           onClick={() => setIsOpen(true)}
           size="icon"
-          className="absolute bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-4 h-12 w-12 rounded-full shadow-lg z-50 hover:scale-105 transition-transform"
+          className="absolute bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-4 h-14 w-14 rounded-full shadow-[0_10px_40px_rgba(249,115,22,0.6)] z-50 hover:scale-110 transition-all duration-300 animate-[bounce_3s_infinite] bg-primary text-primary-foreground border-2 border-primary/50"
         >
           <MessageCircle className="h-6 w-6" />
         </Button>
