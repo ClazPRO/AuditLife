@@ -2,6 +2,13 @@
 
 import { Badge } from "@/components/ui/badge";
 
+type AuditActivity = {
+  activity_id: string;
+  description: string;
+  duration: number;
+  productivity_type: string;
+};
+
 type AuditRecord = {
   audit_id: string;
   week_start_date: string;
@@ -9,6 +16,7 @@ type AuditRecord = {
   total_time: number;
   summary: string | null;
   created_at: string;
+  activities?: AuditActivity[];
 };
 
 export function AuditTable({ records }: { records: AuditRecord[] }) {
@@ -47,6 +55,17 @@ export function AuditTable({ records }: { records: AuditRecord[] }) {
               <p className="text-xs text-muted-foreground mb-3 line-clamp-3 bg-white/[0.01] p-2 rounded-lg border border-white/5">
                 {record.summary}
               </p>
+            )}
+
+            {record.activities && record.activities.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {record.activities.map(act => (
+                  <Badge key={act.activity_id} variant="secondary" className="bg-white/5 hover:bg-white/10 font-normal text-[10px]">
+                    <span className={act.productivity_type === 'produktif' ? 'text-emerald-400 mr-1' : 'text-rose-400 mr-1'}>•</span>
+                    {act.description} ({Math.floor(act.duration/60)}j {act.duration%60}m)
+                  </Badge>
+                ))}
+              </div>
             )}
 
             <div className="flex items-center justify-between border-t border-white/5 pt-2 text-[10px] text-muted-foreground">

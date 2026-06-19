@@ -90,7 +90,13 @@ export async function getWeeklyAudits() {
         week_end_date,
         total_time,
         summary,
-        created_at
+        created_at,
+        activities (
+          activity_id,
+          description,
+          duration,
+          productivity_type
+        )
       `)
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
