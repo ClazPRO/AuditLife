@@ -106,7 +106,7 @@ export function ActivityForm({ categories }: { categories: Category[] }) {
           
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
             <div>
-              <h2 className="text-lg font-bold">Log Weekly Audit</h2>
+              <h2 className="text-lg font-bold">Log Audit Aktivitas</h2>
               <p className="text-xs text-muted-foreground">Catat aktivitas mingguan Anda di sini.</p>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10">

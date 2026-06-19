@@ -113,7 +113,7 @@ export default function Home() {
           {/* Feature Icons */}
           <div className="fade-up fade-up-delay-1 flex items-center justify-center gap-6 sm:gap-12 w-full max-w-md">
             {[
-              { icon: Activity, label: "Weekly Audit", color: "text-orange-400" },
+              { icon: Activity, label: "Audit Aktivitas", color: "text-orange-400" },
               { icon: Brain, label: "AI Insights", color: "text-amber-400" },
               { icon: Wallet, label: "Finances", color: "text-yellow-400" },
             ].map(({ icon: Icon, label, color }) => (

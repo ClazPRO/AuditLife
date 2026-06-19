@@ -73,7 +73,7 @@ export default function RegisterPage() {
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold tracking-tight">Buat Akun Baru</CardTitle>
             <CardDescription>
-              Isi form di bawah ini untuk mulai audit hidupmu
+              Isi form di bawah ini untuk mulai Audit Aktivitasmu
             </CardDescription>
           </CardHeader>
           <CardContent>

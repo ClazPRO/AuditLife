@@ -208,7 +208,7 @@ export default async function DashboardPage() {
                 </p>
                 <Button asChild className="mt-4 glow-primary-hover">
                   <Link href="/audit">
-                    Buat Weekly Audit
+                    Buat Audit Aktivitas
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

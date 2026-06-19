@@ -22,7 +22,7 @@ const items = [
     bgActive: "bg-violet-500/10",
   },
   {
-    title: "Audit Hidup",
+    title: "Audit Aktivitas",
     href: "/audit",
     icon: ClipboardList,
     color: "text-blue-400",

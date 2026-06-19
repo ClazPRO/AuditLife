@@ -13,7 +13,7 @@ export default async function AuditPage() {
     <div className="space-y-6 max-w-4xl mx-auto pb-10">
       <div className="flex flex-col gap-3">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Weekly Audit</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Audit Aktivitas</h2>
           <p className="text-xs text-muted-foreground mt-1">
             Catat aktivitas mingguan Anda untuk mendapatkan analisis dan rekomendasi produktivitas.
           </p>
@@ -30,7 +30,7 @@ export default async function AuditPage() {
 
       <Card className="border-white/5">
         <CardHeader>
-          <CardTitle>Riwayat Weekly Audit</CardTitle>
+          <CardTitle>Riwayat Audit Aktivitas</CardTitle>
           <CardDescription>
             Daftar audit mingguan yang sudah Anda kumpulkan.
           </CardDescription>
