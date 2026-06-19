@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { getWeeklyAudits } from "../audit/actions";
 import { getFinancialRecords } from "../financial/actions";
+import { PrayerTimes } from "@/components/dashboard/prayer-times";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -145,6 +146,9 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Prayer Times Widget */}
+      <PrayerTimes />
 
       {/* Main Content Grid */}
       <div className="flex flex-col gap-4">
