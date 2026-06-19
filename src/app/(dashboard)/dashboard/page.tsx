@@ -90,6 +90,9 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {/* Prayer Times Widget */}
+      <PrayerTimes />
+
       {/* Score Cards */}
       <div className="grid grid-cols-2 gap-3">
         <Card className="neon-card-violet group">
@@ -161,8 +164,6 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      {/* Prayer Times Widget */}
-      <PrayerTimes />
 
       {/* Main Content Grid */}
       <div className="flex flex-col gap-4">
