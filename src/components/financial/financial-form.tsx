@@ -151,6 +151,9 @@ export function FinancialForm({ defaultType }: { defaultType?: "income" | "need"
                           <option value="need" className="bg-card">Need (Kebutuhan)</option>
                           <option value="want" className="bg-card">Want (Keinginan)</option>
                           <option value="investment" className="bg-card">Investment (Investasi)</option>
+                          <option value="zakat" className="text-emerald-500 font-medium bg-card">Zakat</option>
+                          <option value="infaq" className="text-emerald-500 font-medium bg-card">Infaq</option>
+                          <option value="sedekah" className="text-emerald-500 font-medium bg-card">Sedekah</option>
                           <option value="receivable" className="text-amber-500 font-medium bg-card">Receivable (Piutang/Bayarin Teman)</option>
                           <option value="debt" className="text-rose-500 font-medium bg-card">Debt (Utang/Pinjam Uang)</option>
                         </select>

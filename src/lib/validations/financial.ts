@@ -8,7 +8,7 @@ export const financialFormSchema = z.object({
   amount: z.coerce.number().min(1, {
     message: "Jumlah harus lebih dari 0",
   }),
-  type: z.enum(["income", "need", "want", "investment", "receivable", "debt"], {
+  type: z.enum(["income", "need", "want", "investment", "zakat", "infaq", "sedekah", "receivable", "debt"], {
     message: "Tipe pengeluaran/pemasukan harus dipilih.",
   }),
   description: z.string().optional(),

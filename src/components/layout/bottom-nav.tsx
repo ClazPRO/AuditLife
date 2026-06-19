@@ -9,6 +9,7 @@ import {
   LineChart,
   Wallet,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,13 @@ const items = [
     icon: ClipboardList,
     color: "text-blue-400",
     bgActive: "bg-blue-500/10",
+  },
+  {
+    title: "Mutabaah",
+    href: "/mutabaah",
+    icon: BookOpen,
+    color: "text-rose-400",
+    bgActive: "bg-rose-500/10",
   },
   {
     title: "Keuangan",

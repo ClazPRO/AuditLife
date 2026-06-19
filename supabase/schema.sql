@@ -15,8 +15,8 @@ DROP TYPE IF EXISTS finance_type CASCADE;
 
 -- 1. Create Enums
 CREATE TYPE user_role AS ENUM ('user', 'admin', 'super_admin');
-CREATE TYPE activity_type AS ENUM ('produktif', 'non-produktif');
-CREATE TYPE finance_type AS ENUM ('income', 'need', 'want', 'investment');
+CREATE TYPE activity_type AS ENUM ('produktif', 'non-produktif', 'ibadah');
+CREATE TYPE finance_type AS ENUM ('income', 'need', 'want', 'investment', 'zakat', 'infaq', 'sedekah');
 
 -- 2. Create public.users table (extends auth.users)
 CREATE TABLE public.users (
@@ -94,6 +94,7 @@ CREATE TABLE public.scores (
   self_improvement_score DECIMAL DEFAULT 0,
   financial_discipline_score DECIMAL DEFAULT 0,
   spending_awareness_score DECIMAL DEFAULT 0,
+  spiritual_score DECIMAL DEFAULT 0,
   total_score DECIMAL DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
@@ -139,6 +140,24 @@ CREATE TABLE public.financial_records (
 ALTER TABLE public.financial_records ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own financial records" ON public.financial_records FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Users can manage own financial records" ON public.financial_records FOR ALL USING (auth.uid() = user_id);
+
+-- 9. Create mutabaah_records table
+CREATE TABLE public.mutabaah_records (
+  record_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES public.users(user_id) ON DELETE CASCADE NOT NULL,
+  date DATE NOT NULL,
+  fardhu_prayers INTEGER DEFAULT 0,
+  sunnah_prayers BOOLEAN DEFAULT false,
+  tilawah_pages INTEGER DEFAULT 0,
+  sedekah_daily BOOLEAN DEFAULT false,
+  notes TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  UNIQUE(user_id, date)
+);
+
+ALTER TABLE public.mutabaah_records ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can view own mutabaah records" ON public.mutabaah_records FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users can manage own mutabaah records" ON public.mutabaah_records FOR ALL USING (auth.uid() = user_id);
 
 -- Optional: Create trigger to automatically create public.users on auth.users signup
 CREATE OR REPLACE FUNCTION public.handle_new_user() 

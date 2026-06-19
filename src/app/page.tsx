@@ -127,16 +127,23 @@ export default function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="fade-up fade-up-delay-2 flex flex-row gap-3 w-full max-w-sm">
-            <Button asChild size="lg" className="h-11 md:h-12 flex-1 glow-primary-hover text-sm rounded-xl font-bold shadow-[0_0_30px_rgba(249,115,22,0.25)] whitespace-nowrap">
-              <Link href="/register">
-                Mulai Sekarang
-                <ArrowRight className="ml-1.5 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild className="h-11 md:h-12 flex-1 border-white/10 bg-white/[0.02] hover:bg-white/[0.08] backdrop-blur-sm text-sm rounded-xl font-medium">
-              <Link href="/login">
-                Masuk
+          <div className="fade-up fade-up-delay-2 flex flex-col gap-3 w-full max-w-sm">
+            <div className="flex flex-row gap-3 w-full">
+              <Button asChild size="lg" className="h-11 md:h-12 flex-1 glow-primary-hover text-sm rounded-xl font-bold shadow-[0_0_30px_rgba(249,115,22,0.25)] whitespace-nowrap">
+                <Link href="/register">
+                  Daftar Sekarang
+                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild className="h-11 md:h-12 flex-1 border-white/10 bg-white/[0.02] hover:bg-white/[0.08] backdrop-blur-sm text-sm rounded-xl font-medium">
+                <Link href="/login">
+                  Login
+                </Link>
+              </Button>
+            </div>
+            <Button variant="ghost" size="lg" asChild className="h-11 md:h-12 w-full text-muted-foreground hover:text-white hover:bg-white/5 text-sm rounded-xl font-medium">
+              <Link href="/dashboard">
+                Masuk sebagai Tamu
               </Link>
             </Button>
           </div>
