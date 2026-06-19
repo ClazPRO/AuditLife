@@ -111,7 +111,7 @@ export default async function FinancialAuditPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="w-full">
         <ZakatCalculator balance={remainingBalance} />
       </div>
 
