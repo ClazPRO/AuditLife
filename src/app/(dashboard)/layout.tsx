@@ -6,6 +6,7 @@ import { logout } from "../(auth)/actions";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { CursorLoader } from "@/components/layout/cursor-loader";
 import { LogOut } from "lucide-react";
+import { ChatWidget } from "@/components/chat/chat-widget";
 
 export default async function DashboardLayout({
   children,
@@ -54,6 +55,9 @@ export default async function DashboardLayout({
       
       {/* Bottom Navigation */}
       <BottomNav />
+
+      {/* Floating Chat Widget */}
+      <ChatWidget />
 
       {/* Utility Components */}
       <CursorLoader />
