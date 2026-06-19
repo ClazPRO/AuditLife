@@ -94,6 +94,11 @@ export default function InsightPage() {
   const [showLedger, setShowLedger] = useState(false);
   const [ledgerData, setLedgerData] = useState<LedgerRecord[]>([]);
   const [loadingLedger, setLoadingLedger] = useState(false);
+  
+  // Secret Admin State
+  const [secretClicks, setSecretClicks] = useState(0);
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [adminRoast, setAdminRoast] = useState("");
 
   const loadingTexts = [
     "Mengambil data audit produktivitas...",
@@ -111,6 +116,8 @@ export default function InsightPage() {
       if (cached) {
         try { setInsight(JSON.parse(cached)); } catch {}
       }
+      const savedRoast = localStorage.getItem("auditlife_admin_roast");
+      if (savedRoast) setAdminRoast(savedRoast);
     }
     init();
   }, []);
@@ -185,6 +192,22 @@ export default function InsightPage() {
     setShowLedger(!showLedger);
   };
 
+  const handleSecretClick = () => {
+    setSecretClicks((prev) => {
+      const next = prev + 1;
+      if (next >= 5) {
+        setIsAdminMode(!isAdminMode);
+        return 0;
+      }
+      return next;
+    });
+  };
+
+  const handleAdminRoastChange = (val: string) => {
+    setAdminRoast(val);
+    localStorage.setItem("auditlife_admin_roast", val);
+  };
+
   if (hasApiKey === null) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
@@ -198,8 +221,8 @@ export default function InsightPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-extrabold tracking-tight flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-primary animate-pulse" />
+          <h2 className="text-2xl font-extrabold tracking-tight flex items-center gap-2 select-none">
+            <Sparkles onClick={handleSecretClick} className="h-6 w-6 text-primary animate-pulse cursor-pointer" />
             AI Insight
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">Analisis personal berbasis Google Gemini</p>
@@ -308,8 +331,19 @@ export default function InsightPage() {
                 <Brain className="h-4 w-4 text-violet-400 shrink-0" />
                 <span className="text-xs font-bold">Analisis Produktivitas</span>
               </div>
+              
+              {isAdminMode && (
+                <textarea 
+                  className="w-full bg-background border border-violet-500/50 rounded-lg p-3 text-[11px] text-foreground mt-2 focus:outline-none focus:ring-1 focus:ring-violet-500" 
+                  placeholder="[Admin Mode] Ketik teguran/roasting khusus di sini..."
+                  rows={4}
+                  value={adminRoast}
+                  onChange={(e) => handleAdminRoastChange(e.target.value)}
+                />
+              )}
+
               <p className="text-[11px] text-muted-foreground leading-relaxed border-l-2 border-violet-500/30 pl-3">
-                {insight.productivityObservation}
+                {adminRoast ? adminRoast : insight.productivityObservation}
               </p>
               <div className="space-y-1.5">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-violet-400">Tips</p>
