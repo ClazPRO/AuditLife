@@ -15,14 +15,45 @@ interface PrayerTimesData {
 export function PrayerTimes() {
   const [times, setTimes] = useState<PrayerTimesData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [city, setCity] = useState("Jakarta");
+  const [locationName, setLocationName] = useState("Jakarta, Indonesia");
+  const [coords, setCoords] = useState<{lat: number, lon: number} | null>(null);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setCoords({ lat: latitude, lon: longitude });
+          
+          try {
+            const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const geoData = await geoRes.json();
+            const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.county || "Lokasi Anda";
+            setLocationName(`${city}, ${geoData.address.country || "Indonesia"}`);
+          } catch (e) {
+            setLocationName("Lokasi Anda");
+          }
+        },
+        (error) => {
+          console.warn("Geolocation denied or error:", error);
+          // Tetap gunakan default Jakarta
+          setCoords({ lat: -6.2088, lon: 106.8456 }); // Jakarta coords
+        }
+      );
+    } else {
+      setCoords({ lat: -6.2088, lon: 106.8456 });
+    }
+  }, []);
 
   useEffect(() => {
     const fetchPrayerTimes = async () => {
+      if (!coords) return; // Wait for coords to be set
+
       try {
         setLoading(true);
-        // Using Aladhan API for prayer times
-        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Indonesia&method=11`);
+        const url = `https://api.aladhan.com/v1/timings?latitude=${coords.lat}&longitude=${coords.lon}&method=11`;
+        
+        const response = await fetch(url);
         const data = await response.json();
         
         if (data && data.data && data.data.timings) {
@@ -37,7 +68,7 @@ export function PrayerTimes() {
     };
 
     fetchPrayerTimes();
-  }, [city]);
+  }, [coords]);
 
   return (
     <Card className="border-white/5 bg-gradient-to-br from-emerald-900/20 to-emerald-900/5 relative overflow-hidden">
@@ -49,7 +80,7 @@ export function PrayerTimes() {
               <Clock className="h-5 w-5" /> Jadwal Shalat
             </CardTitle>
             <CardDescription className="flex items-center gap-1 mt-1 text-xs">
-              <MapPin className="h-3 w-3" /> {city}, Indonesia
+              <MapPin className="h-3 w-3" /> {locationName}
             </CardDescription>
           </div>
           <div className="text-xs text-muted-foreground">
