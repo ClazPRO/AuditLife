@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Wallet, TrendingDown, PiggyBank, ArrowUpCircle } from "lucide-react";
 import { FinancialForm } from "@/components/financial/financial-form";
 import { FinancialTable } from "@/components/financial/financial-table";
+import { ZakatCalculator } from "@/components/financial/zakat-calculator";
 import { getFinancialRecords } from "./actions";
 
 export const metadata = {
@@ -108,6 +109,10 @@ export default async function FinancialAuditPage() {
             </p>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ZakatCalculator balance={remainingBalance} />
       </div>
 
       <Card>

@@ -48,6 +48,20 @@ export default async function DashboardPage() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Selamat Pagi" : hour < 17 ? "Selamat Siang" : "Selamat Malam";
 
+  // Kumpulan Kutipan Islami Harian
+  const islamicQuotes = [
+    "Maka sesungguhnya bersama kesulitan ada kemudahan. (QS. Al-Insyirah: 5)",
+    "Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu. (QS. Al-Baqarah: 216)",
+    "Dan bersabarlah, karena sesungguhnya Allah beserta orang-orang yang berbuat kebaikan. (QS. Hud: 115)",
+    "Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya. (QS. Al-Baqarah: 286)",
+    "Barangsiapa bertakwa kepada Allah niscaya Dia akan membukakan jalan keluar baginya. (QS. At-Talaq: 2)",
+    "Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya. (HR. Ahmad)",
+    "Dua kenikmatan yang banyak manusia tertipu di dalamnya: Kesehatan dan Waktu Luang. (HR. Bukhari)",
+    "Setiap amal perbuatan tergantung pada niatnya. (HR. Bukhari & Muslim)"
+  ];
+  const dayOfYear = Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
+  const dailyQuote = islamicQuotes[dayOfYear % islamicQuotes.length];
+
   return (
     <div className="space-y-8 max-w-6xl mx-auto pb-10">
       {/* Welcome & Motivation Banner */}
@@ -70,7 +84,7 @@ export default async function DashboardPage() {
           
           <div className="border-t border-white/5 pt-3.5 mt-1">
             <p className="text-xs text-muted-foreground italic leading-relaxed">
-              &ldquo;Setiap audit kecil yang kamu lakukan hari ini adalah investasi untuk versi terbaik dirimu besok. Tetap konsisten! 🚀&rdquo;
+              &ldquo;{dailyQuote}&rdquo;
             </p>
           </div>
         </div>
