@@ -193,7 +193,7 @@ export default async function DashboardPage() {
                   &ldquo;{productivityScore > 50 ? 'Produktivitasmu minggu ini cukup baik! Pertahankan momentum ini agar targetmu cepat tercapai.' : 'Melihat log waktumu, sepertinya minggu ini kamu terlalu santai. Ayo tingkatkan disiplinmu minggu depan!'}&rdquo;
                 </p>
                 <Button className="w-full mt-4 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/50 transition-all duration-300 shadow-[0_0_10px_rgba(var(--primary),0.2)]" asChild>
-                  <Link href="/insight">Minta Roasting Lengkap dari AI</Link>
+                  <Link href="/insight">Minta Analisis Lengkap dari AI</Link>
                 </Button>
               </div>
             ) : (
