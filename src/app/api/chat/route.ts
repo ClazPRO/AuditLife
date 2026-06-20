@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     }));
 
     const result = streamText({
-      model: google("gemini-1.5-flash-latest"),
+      model: google("gemini-flash-latest"),
       messages: formattedMessages,
       system: `Anda adalah AuditLife Assistant, asisten AI analitik di dalam aplikasi AuditLife.
 AuditLife adalah platform pelacakan produktivitas dan keuangan mingguan.
