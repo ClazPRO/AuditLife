@@ -37,7 +37,7 @@ export function ChatWidget() {
         .map((p) => p.text)
         .join("");
     }
-    return "";
+    return m.content || "";
   };
 
   return (
