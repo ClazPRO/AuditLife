@@ -1,11 +1,11 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { google } from "@ai-sdk/google";
+import { streamText } from "ai";
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const messages = body.messages ?? [];
+    const { messages } = await req.json();
 
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       return new Response(
@@ -14,55 +14,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      systemInstruction: `Anda adalah AuditLife Assistant, asisten AI analitik di dalam aplikasi AuditLife.
+    const result = streamText({
+      model: google("gemini-2.5-flash"),
+      messages,
+      system: `Anda adalah AuditLife Assistant, asisten AI analitik di dalam aplikasi AuditLife.
 AuditLife adalah platform pelacakan produktivitas dan keuangan mingguan.
 Tugas Anda adalah merespons pertanyaan pengguna terkait produktivitas dan keuangan.
 KARAKTER ANDA: Analis produktivitas yang sangat objektif, ketat, dan berbasis data. Anda tidak berbasa-basi. Evaluasi setiap pertanyaan secara faktual. Jika kinerja pengguna buruk, sampaikan fakta kelemahannya secara lugas, profesional, dan solutif. Tujuannya adalah membangun kedisiplinan melalui evaluasi data yang jujur.`,
     });
 
-    // Convert messages to Gemini chat history format
-    const history = messages.slice(0, -1).map((m: { role: string; content: string; parts?: { text: string }[] }) => ({
-      role: m.role === "user" ? "user" : "model",
-      parts: [{ text: typeof m.content === "string" ? m.content : (m.parts?.map((p: { text: string }) => p.text).join("") ?? "") }],
-    }));
-
-    const lastMessage = messages[messages.length - 1];
-    const lastContent = typeof lastMessage.content === "string"
-      ? lastMessage.content
-      : (lastMessage.parts?.map((p: { text: string }) => p.text).join("") ?? "");
-
-    const chat = model.startChat({ history });
-    const result = await chat.sendMessageStream(lastContent);
-
-    // Stream the response as plain text
-    const encoder = new TextEncoder();
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of result.stream) {
-            const text = chunk.text();
-            if (text) {
-              controller.enqueue(encoder.encode(text));
-            }
-          }
-          controller.close();
-        } catch (err: unknown) {
-          console.error("Stream error:", err instanceof Error ? err.message : String(err));
-          controller.close();
-        }
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-cache",
-        "X-Content-Type-Options": "nosniff",
-      },
-    });
+    return result.toDataStreamResponse();
   } catch (error: unknown) {
     console.error("AI Chat error:", error instanceof Error ? error.message : String(error));
     return new Response(
