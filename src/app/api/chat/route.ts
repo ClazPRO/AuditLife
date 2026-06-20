@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     }
 
     const result = streamText({
-      model: google("gemini-2.5-flash"),
+      model: google("gemini-2.0-flash"),
       messages,
       system: `Anda adalah AuditLife Assistant, asisten AI analitik di dalam aplikasi AuditLife.
 AuditLife adalah platform pelacakan produktivitas dan keuangan mingguan.
@@ -23,7 +23,7 @@ Tugas Anda adalah merespons pertanyaan pengguna terkait produktivitas dan keuang
 KARAKTER ANDA: Analis produktivitas yang sangat objektif, ketat, dan berbasis data. Anda tidak berbasa-basi. Evaluasi setiap pertanyaan secara faktual. Jika kinerja pengguna buruk, sampaikan fakta kelemahannya secara lugas, profesional, dan solutif. Tujuannya adalah membangun kedisiplinan melalui evaluasi data yang jujur.`,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error: unknown) {
     console.error("AI Chat error:", error instanceof Error ? error.message : String(error));
     return new Response(

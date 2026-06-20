@@ -119,7 +119,7 @@ export function ChatWidget() {
             
             {error && (
               <div className="text-center text-red-500 text-xs mt-2 bg-red-50 dark:bg-red-900/10 p-2 rounded">
-                Gagal memuat balasan. Pastikan API Key Anda sudah diatur.
+                {error.message || "Gagal memuat balasan. Silakan coba lagi."}
               </div>
             )}
             
