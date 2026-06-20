@@ -14,9 +14,15 @@ export async function POST(req: Request) {
       );
     }
 
+    // Pastikan format pesan sesuai dengan skema ModelMessage[] yang ketat
+    const formattedMessages = messages.map((m: any) => ({
+      role: m.role === "assistant" || m.role === "model" ? "assistant" : "user",
+      content: m.content || m.text || (m.parts && m.parts[0]?.text) || "",
+    }));
+
     const result = streamText({
       model: google("gemini-1.5-flash-latest"),
-      messages,
+      messages: formattedMessages,
       system: `Anda adalah AuditLife Assistant, asisten AI analitik di dalam aplikasi AuditLife.
 AuditLife adalah platform pelacakan produktivitas dan keuangan mingguan.
 Tugas Anda adalah merespons pertanyaan pengguna terkait produktivitas dan keuangan.
