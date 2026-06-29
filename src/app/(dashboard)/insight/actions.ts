@@ -1,8 +1,5 @@
 "use server";
 
-export const maxDuration = 60; // Allow function to run up to 60 seconds on Vercel
-
-
 import { createClient } from "@/utils/supabase/server";
 import { ensurePublicUser } from "@/lib/ensure-user";
 import { GoogleGenerativeAI } from "@google/generative-ai";
