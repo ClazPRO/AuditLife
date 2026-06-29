@@ -160,8 +160,8 @@ export default function InsightPage() {
         localStorage.setItem("auditlife_ai_insights_v2", JSON.stringify(newInsight));
         toast({ title: "✨ Insight Diperbarui!", description: "Wawasan AI terbaru siap dibaca." });
       }
-    } catch {
-      toast({ title: "Kesalahan", description: "Gagal memproses data AI.", variant: "destructive" });
+    } catch (e: any) {
+      toast({ title: "Kesalahan Server", description: e?.message || "Koneksi ke server terputus atau timeout.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }

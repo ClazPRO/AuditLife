@@ -1,5 +1,8 @@
 "use server";
 
+export const maxDuration = 60; // Allow function to run up to 60 seconds on Vercel
+
+
 import { createClient } from "@/utils/supabase/server";
 import { ensurePublicUser } from "@/lib/ensure-user";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -171,16 +174,16 @@ Jika data kosong, buat insight motivasi umum dengan score default 50.`;
           savingsStatus: parsed.savingsStatus || "Cukup",
         } 
       };
-    } catch (parseError) {
+    } catch (parseError: any) {
       console.error("Failed to parse Gemini response as JSON:", text, parseError);
       return { 
-        error: "Gagal memproses hasil analisis AI. Silakan coba generate kembali." 
+        error: `Gagal memproses hasil analisis AI. Respons mentah: ${text.substring(0, 50)}...` 
       };
     }
-  } catch (apiError) {
+  } catch (apiError: any) {
     console.error("Gemini API call error:", apiError);
     return { 
-      error: "Gagal memanggil AI Google Gemini. Pastikan API Key Anda aktif dan valid." 
+      error: `Gagal memanggil AI Google Gemini: ${apiError?.message || "Kesalahan sistem"}` 
     };
   }
 }
